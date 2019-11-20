@@ -17,11 +17,9 @@ import java.util.ArrayList;
  */
 public class Main {
     public static void main(String[] args) {
-        GUIMenu m = new GUIMenu();
-        m.setVisible(true);
-       //RunMVC mvc = new RunMVC();
-       //GestorConductor g= new GestorConductor();
-       //g.consultarRoles("10");
+
+       RunMVC mvc = new RunMVC();
+
         
 
     }  

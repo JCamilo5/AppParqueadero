@@ -19,11 +19,11 @@ import mvcf.AModel;
  */
 public class GestorUsuarios  extends AModel{
     
-    private final IServiciosUsuario servidorUsuarios;
+    private final IServiciosUsuario servicioUsuarios;
     private String respuesta;
     
     public GestorUsuarios(){
-        servidorUsuarios = new ServicioServidorUnicauca();
+        servicioUsuarios = new ServicioServidorUnicauca();
         respuesta = "";
     }
     
@@ -52,7 +52,7 @@ public class GestorUsuarios  extends AModel{
      * @return usuario
      */
     public Usuario consultarUsuario(String usuario,String password){
-        String json = servidorUsuarios.consultarUsuario(usuario, password);
+        String json = servicioUsuarios.consultarUsuario(usuario, password);
         Usuario miUsuario = null;
         if(!json.equals("No se encontro el usuario")){
             miUsuario = parseToUsuario(json);
