@@ -23,7 +23,7 @@ import javax.swing.JOptionPane;
 public class Utilidades {
 
     public static Usuario usuario;
-
+    public static String placa;
 
     /**
      * Transforma una fecha de String a Date

@@ -12,4 +12,5 @@ package com.unicauca.parqueadero.acceso;
 public interface IServiciosUsuario {
     
     public String consultarUsuario(String usuario,String password); 
+    public String registrarUsuario();
 }

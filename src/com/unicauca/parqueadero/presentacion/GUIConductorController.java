@@ -17,11 +17,11 @@ import mvcf.AView;
  * @author JuanCamilo
  */
 public class GUIConductorController implements ActionListener{
-    private GUIConductores vista;
+    private GUIBusquedaConductor vista;
     private GestorConductor modelo;
     private Utilidades utilidades;
     
-    public GUIConductorController(GestorConductor modelo, GUIConductores vista){
+    public GUIConductorController(GestorConductor modelo, GUIBusquedaConductor vista){
         this.vista  = vista;
         this.modelo = modelo;
         this.utilidades = new Utilidades();

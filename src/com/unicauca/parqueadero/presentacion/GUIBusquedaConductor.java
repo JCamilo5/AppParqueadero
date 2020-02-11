@@ -8,6 +8,7 @@ package com.unicauca.parqueadero.presentacion;
 import com.unicauca.parqueadero.negocio.Conductor;
 import com.unicauca.parqueadero.negocio.GestorConductor;
 import com.unicauca.parqueadero.negocio.Vehiculo;
+import com.unicauca.parqueadero.utilidades.Utilidades;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -29,7 +30,7 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
     public GUIBusquedaConductor() {
         initComponents();
         inicializarTabla();
-        this.setSize(1000, 400);
+        this.setSize(1000, 600);
     }
     
 
@@ -42,6 +43,8 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pnlBotones = new javax.swing.JPanel();
+        btnAsignarPuesto = new javax.swing.JButton();
         pnlResultados = new javax.swing.JPanel();
         lblInfoConductor = new javax.swing.JLabel();
         pblTabla = new javax.swing.JPanel();
@@ -56,6 +59,26 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
         rbCarnet = new javax.swing.JRadioButton();
         rbCedula = new javax.swing.JRadioButton();
         btnConsultar = new javax.swing.JButton();
+
+        setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/buscar.png"))); // NOI18N
+
+        javax.swing.GroupLayout pnlBotonesLayout = new javax.swing.GroupLayout(pnlBotones);
+        pnlBotones.setLayout(pnlBotonesLayout);
+        pnlBotonesLayout.setHorizontalGroup(
+            pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        pnlBotonesLayout.setVerticalGroup(
+            pnlBotonesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+
+        getContentPane().add(pnlBotones, java.awt.BorderLayout.SOUTH);
+
+        btnAsignarPuesto.setBackground(new java.awt.Color(0, 204, 204));
+        btnAsignarPuesto.setFont(new java.awt.Font("Ebrima", 0, 14)); // NOI18N
+        btnAsignarPuesto.setText("Asignar Puesto");
+        getContentPane().add(btnAsignarPuesto, java.awt.BorderLayout.PAGE_END);
 
         pnlResultados.setLayout(new java.awt.BorderLayout());
 
@@ -139,12 +162,22 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
         rbCarnet.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
         rbCarnet.setForeground(new java.awt.Color(255, 255, 255));
         rbCarnet.setText("Carnet  ");
+        rbCarnet.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbCarnetActionPerformed(evt);
+            }
+        });
         pnlTipoDocumento.add(rbCarnet);
 
         rbCedula.setBackground(new java.awt.Color(0, 102, 102));
         rbCedula.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
         rbCedula.setForeground(new java.awt.Color(255, 255, 255));
         rbCedula.setText("Cedula");
+        rbCedula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rbCedulaActionPerformed(evt);
+            }
+        });
         pnlTipoDocumento.add(rbCedula);
 
         pnlBusqueda.add(pnlTipoDocumento);
@@ -170,22 +203,32 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         GestorConductor gestor = new GestorConductor();
         String cedula = txtDocumento.getText();
-        Conductor aux = gestor.consultarConductor(cedula);
+        Conductor aux = gestor.consultarConductor(cedula);//Guarda el conductor con el numero de cedula ingresado
         if(aux == null){
-            lblInfoConductor.setText("No se encuentra registrado el numeor de identificacion");
-            //TODO agregar como visitante
+            Utilidades.mensajeAdvertencia("No se encuentró conductor con el numero ingresado,debera agregarse manualmente", "No se encontro el conductor");
+            GUIRegistroConductor registro = new GUIRegistroConductor();
         }else{
             lblInfoConductor.setText("INFORMACION: Nombre: "+aux.getNombres()+" Apellidos: "+aux.getApellidos()+" Rol: "+gestor.consultarRoles(cedula));
-            if(gestor.obtenerVehiculosCon(cedula).isEmpty()){
-                //TODO agregar vehiculo
-            }else{
+            if(!gestor.obtenerVehiculosCon(cedula).isEmpty()){
                 llenarTabla(gestor.obtenerVehiculosCon(cedula));
+            }else{
+                Utilidades.mensajeAdvertencia("No se encuentran vehiculos asociados,el registro del vehiculo se debe hacer manualmentes", "No se encuentran vehiculos asociados");
+                GUIRegistroVehiculo registro = new GUIRegistroVehiculo();
             }
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
+    private void rbCarnetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCarnetActionPerformed
+       rbCedula.setSelected(false);
+    }//GEN-LAST:event_rbCarnetActionPerformed
+
+    private void rbCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCedulaActionPerformed
+        rbCarnet.setSelected(false);
+    }//GEN-LAST:event_rbCedulaActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAsignarPuesto;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblInfoConductor;
@@ -193,6 +236,7 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
     private javax.swing.JLabel lblTituloIngrese;
     private javax.swing.JPanel pblCampo;
     private javax.swing.JPanel pblTabla;
+    private javax.swing.JPanel pnlBotones;
     private javax.swing.JPanel pnlBusqueda;
     private javax.swing.JPanel pnlResultados;
     private javax.swing.JPanel pnlTipoDocumento;

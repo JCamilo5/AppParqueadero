@@ -48,7 +48,7 @@ public class GUILoginController implements ActionListener {
         utilidades.usuario = modelo.consultarUsuario(usuario, password);
         if(modelo.consultarUsuario(usuario, password) != null){
             vista.dispose();
-            GUIMenu vistaMenu = new GUIMenu();
+            GUIMenu vistaMenu = new GUIMenu(utilidades.usuario.getPrivilegio());
             vistaMenu.setExtendedState(MAXIMIZED_BOTH);
             vistaMenu.setVisible(true);
             

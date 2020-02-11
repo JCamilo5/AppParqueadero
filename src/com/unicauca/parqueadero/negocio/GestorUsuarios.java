@@ -71,8 +71,9 @@ public class GestorUsuarios  extends AModel{
         String fechaNaci = propiedades.getProperty("fechaNaci");
         String user = propiedades.getProperty("user");
         String password = propiedades.getProperty("password");
+        String privilegio = propiedades.getProperty("privilegio");
         
-        Usuario miUsuario = new Usuario(cedula,nombres,apellidos,fechaNaci,user,password);
+        Usuario miUsuario = new Usuario(cedula,nombres,apellidos,fechaNaci,user,password,privilegio);
         return miUsuario; 
     } 
 }

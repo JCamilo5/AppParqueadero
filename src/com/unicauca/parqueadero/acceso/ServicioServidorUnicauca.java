@@ -144,5 +144,55 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         }
         return respuesta;
     }
+
+    @Override
+    public String registrarUsuario() {
+       return " ";
+    }
+
+    @Override
+    public String agregarConductor(String cedula,String nombres,String apellidos,String genero,String fechaNaci) {
+        String respuesta = null;
+        String accion = "Registrar Conductor";
+        try {
+            conectar(IP_SERVIDOR, PUERTO);
+            respuesta = leerFlujoEntradaSalida(accion + "," + cedula+","+nombres+","+apellidos+","+genero+","+fechaNaci);
+            cerrarFlujos();
+            desconectar();
+        } catch (IOException ex) {
+            Logger.getLogger(ServicioServidorUnicauca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return respuesta;
+    }
+
+    @Override
+    public String agregarVehiculo(String placa, String marca, String tipo) {
+         String respuesta = null;
+        String accion = "Agregar Vehiculo";
+        try {
+            conectar(IP_SERVIDOR, PUERTO);
+            respuesta = leerFlujoEntradaSalida(accion +","+placa+","+marca+","+tipo);
+            cerrarFlujos();
+            desconectar();
+        } catch (IOException ex) {
+            Logger.getLogger(ServicioServidorUnicauca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return respuesta;
+    }
+
+    @Override
+    public String asociarVehiCond(String cedula, String placa) {
+        String respuesta = null;
+        String accion = "Asociar Vehiculo";
+        try{
+            conectar(IP_SERVIDOR,PUERTO);
+            respuesta = leerFlujoEntradaSalida(accion +","+cedula+","+placa);
+            cerrarFlujos();
+            desconectar();
+        }catch (IOException ex){
+            Logger.getLogger(ServicioServidorUnicauca.class.getName()).log(Level.SEVERE,null,ex);
+        }
+        return respuesta;
+    }
     
 }

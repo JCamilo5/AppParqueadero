@@ -5,17 +5,20 @@
  */
 package com.unicauca.parqueadero.presentacion;
 
+import javax.swing.JButton;
+
 /**
  *
  * @author JuanCamilo
  */
-public class GUIParqueaderoSur extends javax.swing.JPanel {
+public class GUIParqueaderoSur extends javax.swing.JFrame {
 
     /**
      * Creates new form GUIParqueaderoSur
      */
     public GUIParqueaderoSur() {
         initComponents();
+        this.setSize(570, 500);
     }
 
     /**
@@ -27,19 +30,249 @@ public class GUIParqueaderoSur extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
-        );
+        pnlParqueadero = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        pnlZonaMotos = new javax.swing.JPanel();
+        pnlPuesto1 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jButton6 = new javax.swing.JButton();
+        jButton7 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
+        jButton9 = new javax.swing.JButton();
+        jButton10 = new javax.swing.JButton();
+        jButton11 = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        jButton12 = new javax.swing.JButton();
+        jButton13 = new javax.swing.JButton();
+        jButton14 = new javax.swing.JButton();
+        jButton15 = new javax.swing.JButton();
+        jButton16 = new javax.swing.JButton();
+        jButton17 = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jButton33 = new javax.swing.JButton();
+        jButton34 = new javax.swing.JButton();
+        jButton35 = new javax.swing.JButton();
+        jButton36 = new javax.swing.JButton();
+        jButton37 = new javax.swing.JButton();
+        jButton38 = new javax.swing.JButton();
+        jButton39 = new javax.swing.JButton();
+        jButton40 = new javax.swing.JButton();
+        jButton41 = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        jButton18 = new javax.swing.JButton();
+        jButton19 = new javax.swing.JButton();
+        jButton20 = new javax.swing.JButton();
+        jButton21 = new javax.swing.JButton();
+        jButton22 = new javax.swing.JButton();
+        jButton23 = new javax.swing.JButton();
+        jButton24 = new javax.swing.JButton();
+        jButton25 = new javax.swing.JButton();
+        jButton26 = new javax.swing.JButton();
+        jButton27 = new javax.swing.JButton();
+        jButton28 = new javax.swing.JButton();
+        jButton29 = new javax.swing.JButton();
+        jButton30 = new javax.swing.JButton();
+        jButton31 = new javax.swing.JButton();
+        jButton32 = new javax.swing.JButton();
+        pnlTitulo = new javax.swing.JPanel();
+        lblTitulo = new javax.swing.JLabel();
+        pnlOcupado = new javax.swing.JPanel();
+        btnOcupado = new javax.swing.JButton();
+        lblOcupado = new javax.swing.JLabel();
+        lblEspacioVacio = new javax.swing.JLabel();
+        pnlLibre = new javax.swing.JPanel();
+        btlnLibre = new javax.swing.JButton();
+        lblLibre = new javax.swing.JLabel();
+
+        pnlParqueadero.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel1.setBackground(new java.awt.Color(255, 102, 102));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Laboratorios"));
+        pnlParqueadero.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 140, 80, 220));
+
+        jPanel2.setBackground(new java.awt.Color(255, 102, 102));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("IPET"));
+        pnlParqueadero.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 80, 110, 40));
+
+        jPanel3.setBackground(new java.awt.Color(255, 102, 102));
+        jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("FIET"));
+        pnlParqueadero.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 90, 280));
+
+        pnlZonaMotos.setBackground(new java.awt.Color(153, 153, 153));
+        pnlZonaMotos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        pnlPuesto1.setBorder(null);
+        pnlZonaMotos.add(pnlPuesto1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 20, 20));
+        pnlZonaMotos.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 10, 20, 20));
+        pnlZonaMotos.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 20, 20));
+        pnlZonaMotos.add(jButton4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 20, 20));
+        pnlZonaMotos.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 40, 20, 20));
+        pnlZonaMotos.add(jButton5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 70, 20, 20));
+        pnlZonaMotos.add(jButton6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 20, 20));
+        pnlZonaMotos.add(jButton7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 20, 20));
+        pnlZonaMotos.add(jButton8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 20, 20));
+        pnlZonaMotos.add(jButton9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 130, 20, 20));
+        pnlZonaMotos.add(jButton10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 20, 20));
+        pnlZonaMotos.add(jButton11, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 160, 20, 20));
+
+        pnlParqueadero.add(pnlZonaMotos, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 160, 80, 190));
+
+        jPanel5.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel5.add(jButton12, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 20, 20));
+
+        jButton13.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton13ActionPerformed(evt);
+            }
+        });
+        jPanel5.add(jButton13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 20, 20));
+        jPanel5.add(jButton14, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 20, 20));
+        jPanel5.add(jButton15, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 20, 20));
+        jPanel5.add(jButton16, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 20, 20));
+        jPanel5.add(jButton17, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 20, 20));
+
+        pnlParqueadero.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 100, 70));
+
+        jPanel6.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel6.add(jButton33, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 20, 20));
+        jPanel6.add(jButton34, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 20, 20));
+        jPanel6.add(jButton35, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 20, 20));
+        jPanel6.add(jButton36, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 20, 20));
+        jPanel6.add(jButton37, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 20, 20));
+        jPanel6.add(jButton38, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 20, 20));
+        jPanel6.add(jButton39, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 20, 20));
+        jPanel6.add(jButton40, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 20, 20));
+        jPanel6.add(jButton41, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 20, 20));
+
+        pnlParqueadero.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 100, 100));
+
+        jPanel7.setBackground(new java.awt.Color(153, 153, 153));
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        jPanel7.add(jButton18, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 20, 20));
+        jPanel7.add(jButton19, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 20, 20));
+        jPanel7.add(jButton20, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 20, 20));
+        jPanel7.add(jButton21, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 20, 20));
+        jPanel7.add(jButton22, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 100, 20, 20));
+        jPanel7.add(jButton23, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 130, 20, 20));
+        jPanel7.add(jButton24, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 20, 20));
+        jPanel7.add(jButton25, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 20, 20));
+        jPanel7.add(jButton26, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 100, 20, 20));
+        jPanel7.add(jButton27, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, 20, 20));
+        jPanel7.add(jButton28, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 20, 20));
+        jPanel7.add(jButton29, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 20, 20));
+        jPanel7.add(jButton30, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 20, 20));
+        jPanel7.add(jButton31, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 130, 20, 20));
+        jPanel7.add(jButton32, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 20, 20));
+
+        pnlParqueadero.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 100, 170));
+
+        getContentPane().add(pnlParqueadero, java.awt.BorderLayout.CENTER);
+
+        pnlTitulo.setLayout(new java.awt.GridLayout(2, 2));
+
+        lblTitulo.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        lblTitulo.setText("PARQUEADERO UNICAUCA");
+        pnlTitulo.add(lblTitulo);
+
+        pnlOcupado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnOcupado.setBackground(new java.awt.Color(51, 153, 0));
+        pnlOcupado.add(btnOcupado, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 20, 20));
+
+        lblOcupado.setText("OCUPADO");
+        pnlOcupado.add(lblOcupado, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 283, 20));
+
+        pnlTitulo.add(pnlOcupado);
+        pnlTitulo.add(lblEspacioVacio);
+
+        pnlLibre.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btlnLibre.setBackground(new java.awt.Color(255, 255, 255));
+        pnlLibre.add(btlnLibre, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 20, 20));
+
+        lblLibre.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        lblLibre.setText("LIBRE");
+        pnlLibre.add(lblLibre, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
+
+        pnlTitulo.add(pnlLibre);
+
+        getContentPane().add(pnlTitulo, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton13ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton13ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btlnLibre;
+    private javax.swing.JButton btnOcupado;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton10;
+    private javax.swing.JButton jButton11;
+    private javax.swing.JButton jButton12;
+    private javax.swing.JButton jButton13;
+    private javax.swing.JButton jButton14;
+    private javax.swing.JButton jButton15;
+    private javax.swing.JButton jButton16;
+    private javax.swing.JButton jButton17;
+    private javax.swing.JButton jButton18;
+    private javax.swing.JButton jButton19;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton20;
+    private javax.swing.JButton jButton21;
+    private javax.swing.JButton jButton22;
+    private javax.swing.JButton jButton23;
+    private javax.swing.JButton jButton24;
+    private javax.swing.JButton jButton25;
+    private javax.swing.JButton jButton26;
+    private javax.swing.JButton jButton27;
+    private javax.swing.JButton jButton28;
+    private javax.swing.JButton jButton29;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton30;
+    private javax.swing.JButton jButton31;
+    private javax.swing.JButton jButton32;
+    private javax.swing.JButton jButton33;
+    private javax.swing.JButton jButton34;
+    private javax.swing.JButton jButton35;
+    private javax.swing.JButton jButton36;
+    private javax.swing.JButton jButton37;
+    private javax.swing.JButton jButton38;
+    private javax.swing.JButton jButton39;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton40;
+    private javax.swing.JButton jButton41;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButton6;
+    private javax.swing.JButton jButton7;
+    private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JLabel lblEspacioVacio;
+    private javax.swing.JLabel lblLibre;
+    private javax.swing.JLabel lblOcupado;
+    private javax.swing.JLabel lblTitulo;
+    private javax.swing.JPanel pnlLibre;
+    private javax.swing.JPanel pnlOcupado;
+    private javax.swing.JPanel pnlParqueadero;
+    private javax.swing.JButton pnlPuesto1;
+    private javax.swing.JPanel pnlTitulo;
+    private javax.swing.JPanel pnlZonaMotos;
     // End of variables declaration//GEN-END:variables
+
+  
 }

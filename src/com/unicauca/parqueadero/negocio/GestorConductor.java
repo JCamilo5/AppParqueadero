@@ -65,12 +65,58 @@ public class GestorConductor extends AModel {
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
     }
-
+    /**
+     * Metodo que inserta un nuevo conductor,le pasa los datos al servidor 
+     * @param cedula 
+     * @param nombres
+     * @param apellidos
+     * @param genero
+     * @param fechaNaci
+     * @return true si la insercion es exitosa, false si falla
+     */
+    public boolean agregarConductor(String cedula,String nombres, String apellidos, String genero,String fechaNaci){
+        boolean exito =false;
+        try{
+            servicioConductores.agregarConductor(cedula, nombres, apellidos, genero, fechaNaci);
+            exito = true;
+        }catch(Exception e){
+            return exito;
+        }
+        return exito;
+    }
+    /**
+     * Metodo que retorna el rol con mayor prioridad de un conductor
+     * @param cedula
+     * @return 
+     */
     public String consultarRoles(String cedula) {
         String rol = servicioConductores.consultarRoles(cedula);
         return rol;
     }
-
+    /**
+     * Agregar un vehiculo a un conductor
+     * @param cedula cedula del conductor
+     * @param placa placa del vehiculo
+     * @param marca marca del vehiculo
+     * @param tipo tipo de vehiculo
+     * @return respuesta del servidor
+     */
+    public String agregarVehiculo(String placa,String marca,String tipo){
+        String json = servicioConductores.agregarVehiculo(placa, marca, tipo);
+        respuesta = json;
+        return json;
+    }
+    //Cambiar a bool para saber si funciono TODO
+    public String asociarVehiCond(String cedula,String placa){
+        String json = servicioConductores.asociarVehiCond(cedula, placa);
+        respuesta = json;
+        return json;
+    }
+    /**
+     * Metodo que busca un conductor
+     * @param cedula parametro por el cual se hace la busqueda
+     * @return Conductor
+     */
     public Conductor consultarConductor(String cedula) {
         Conductor miConductor = null;
         String json = servicioConductores.consultarConductor(cedula);

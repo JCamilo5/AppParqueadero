@@ -18,9 +18,10 @@ import java.util.ArrayList;
 public class Main {
     public static void main(String[] args) {
 
-       RunMVC mvc = new RunMVC();
-
+        //RunMVC mvc = new RunMVC();
+        GUIParqueaderoSur p = new GUIParqueaderoSur();
+        p.setVisible(true);
         
-
+    
     }  
 }

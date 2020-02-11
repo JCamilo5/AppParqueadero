@@ -15,16 +15,32 @@ import java.awt.Toolkit;
  * @author JuanCamilo
  */
 public class GUIMenu extends javax.swing.JFrame {
-
+    private String privilegio;
     /**
      * Creates new form test
      */
-    public GUIMenu() {
+    public GUIMenu(String privilegio) {
+        this.privilegio = privilegio;
         initComponents();
-        //Poner el icono de la aplicación
-        Image icon = Toolkit.getDefaultToolkit().getImage("./src/recursos/logo.png");
+        myInit();
+        
+    }
+    
+    private void myInit(){
+       Image icon = Toolkit.getDefaultToolkit().getImage("./src/recursos/logo.png");
         this.setIconImage(icon);
-        ponerUsuarioLogueado();
+        ponerUsuarioLogueado(); 
+        //Asigno rivilegios
+        if(privilegio.equals("administrador")){
+            this.sbMnuAyuda.setVisible(true);
+            this.sbMnuOpcAdmin.setVisible(true);
+            this.sbMnuOpciones.setVisible(true);
+        }
+        if(privilegio.equals("usuario")){
+             this.sbMnuAyuda.setVisible(true);
+            this.sbMnuOpcAdmin.setVisible(false);
+            this.sbMnuOpciones.setVisible(true);
+        }
     }
     public void usuario_activo(String usuario){
         lblUsuario.setForeground(Color.RED);
@@ -53,12 +69,14 @@ public class GUIMenu extends javax.swing.JFrame {
         lblUsuario = new javax.swing.JLabel();
         dskEscritorio = new javax.swing.JDesktopPane();
         mbParqueadero = new javax.swing.JMenuBar();
-        jMenu2 = new javax.swing.JMenu();
+        sbMnuOpciones = new javax.swing.JMenu();
         btnConsConductor = new javax.swing.JMenuItem();
         btnVerMapa = new javax.swing.JMenuItem();
         btnSalir = new javax.swing.JMenuItem();
-        jMenu1 = new javax.swing.JMenu();
+        sbMnuAyuda = new javax.swing.JMenu();
         menAcercade = new javax.swing.JMenuItem();
+        sbMnuOpcAdmin = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         mnuEmpleadoLogueado = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -75,7 +93,7 @@ public class GUIMenu extends javax.swing.JFrame {
         mbParqueadero.setMaximumSize(new java.awt.Dimension(324, 32769));
         mbParqueadero.setPreferredSize(new java.awt.Dimension(345, 21));
 
-        jMenu2.setText("Opciones");
+        sbMnuOpciones.setText("Opciones");
 
         btnConsConductor.setBackground(new java.awt.Color(153, 153, 255));
         btnConsConductor.setText("Consultar informacion del conductor");
@@ -84,7 +102,7 @@ public class GUIMenu extends javax.swing.JFrame {
                 btnConsConductorActionPerformed(evt);
             }
         });
-        jMenu2.add(btnConsConductor);
+        sbMnuOpciones.add(btnConsConductor);
 
         btnVerMapa.setText("Ver Mapa");
         btnVerMapa.addActionListener(new java.awt.event.ActionListener() {
@@ -92,7 +110,7 @@ public class GUIMenu extends javax.swing.JFrame {
                 btnVerMapaActionPerformed(evt);
             }
         });
-        jMenu2.add(btnVerMapa);
+        sbMnuOpciones.add(btnVerMapa);
 
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -100,11 +118,11 @@ public class GUIMenu extends javax.swing.JFrame {
                 btnSalirActionPerformed(evt);
             }
         });
-        jMenu2.add(btnSalir);
+        sbMnuOpciones.add(btnSalir);
 
-        mbParqueadero.add(jMenu2);
+        mbParqueadero.add(sbMnuOpciones);
 
-        jMenu1.setText("Ayuda");
+        sbMnuAyuda.setText("Ayuda");
 
         menAcercade.setText("Acerca de");
         menAcercade.addActionListener(new java.awt.event.ActionListener() {
@@ -112,9 +130,16 @@ public class GUIMenu extends javax.swing.JFrame {
                 menAcercadeActionPerformed(evt);
             }
         });
-        jMenu1.add(menAcercade);
+        sbMnuAyuda.add(menAcercade);
 
-        mbParqueadero.add(jMenu1);
+        mbParqueadero.add(sbMnuAyuda);
+
+        sbMnuOpcAdmin.setText("Opciones de Administrador");
+
+        jMenuItem1.setText("Agregar Vigilante");
+        sbMnuOpcAdmin.add(jMenuItem1);
+
+        mbParqueadero.add(sbMnuOpcAdmin);
 
         mnuEmpleadoLogueado.setBackground(new java.awt.Color(255, 51, 153));
         mnuEmpleadoLogueado.setText("Usuario");
@@ -171,51 +196,20 @@ public class GUIMenu extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(GUIMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(GUIMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(GUIMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(GUIMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new GUIMenu().setVisible(true);
-            }
-        });
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnConsConductor;
     private javax.swing.JMenuItem btnSalir;
     private javax.swing.JMenuItem btnVerMapa;
     private javax.swing.JDesktopPane dskEscritorio;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JMenuBar mbParqueadero;
     private javax.swing.JMenuItem menAcercade;
     private javax.swing.JMenu mnuEmpleadoLogueado;
+    private javax.swing.JMenu sbMnuAyuda;
+    private javax.swing.JMenu sbMnuOpcAdmin;
+    private javax.swing.JMenu sbMnuOpciones;
     // End of variables declaration//GEN-END:variables
 }
