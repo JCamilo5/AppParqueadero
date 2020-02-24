@@ -15,48 +15,66 @@ import java.awt.Toolkit;
  * @author JuanCamilo
  */
 public class GUIMenu extends javax.swing.JFrame {
+    private GUIBusquedaConductor busqueda;
+    private GUIParqueaderoController vistaMapa;
     private String privilegio;
+
     /**
      * Creates new form test
      */
-    public GUIMenu(String privilegio) {
-        this.privilegio = privilegio;
+    public GUIMenu() {
+
         initComponents();
-        myInit();
-        
+
     }
-    
-    private void myInit(){
-       Image icon = Toolkit.getDefaultToolkit().getImage("./src/recursos/logo.png");
+    public void setVistaMapa(GUIParqueaderoController pc){
+        this.vistaMapa = pc;
+    }
+    public void setBusqueda(GUIBusquedaConductor vista){
+        this.busqueda = vista;
+    }
+    public void setPrivilegio(String privilegio) {
+        this.privilegio = privilegio;
+    }
+
+    public void iniciar() {
+        Image icon = Toolkit.getDefaultToolkit().getImage("./src/recursos/logo.png");
         this.setIconImage(icon);
-        ponerUsuarioLogueado(); 
+        ponerUsuarioLogueado();
         //Asigno rivilegios
-        if(privilegio.equals("administrador")){
+        if (privilegio.equals("administrador")) {
             this.sbMnuAyuda.setVisible(true);
             this.sbMnuOpcAdmin.setVisible(true);
             this.sbMnuOpciones.setVisible(true);
         }
-        if(privilegio.equals("usuario")){
-             this.sbMnuAyuda.setVisible(true);
+        if (privilegio.equals("vigilante")) {
+            this.sbMnuAyuda.setVisible(true);
             this.sbMnuOpcAdmin.setVisible(false);
             this.sbMnuOpciones.setVisible(true);
         }
+        this.setExtendedState(MAXIMIZED_BOTH);
+        ponerUsuarioLogueado();
+        this.setVisible(true);
+
     }
-    public void usuario_activo(String usuario){
+
+    public void usuario_activo(String usuario) {
         lblUsuario.setForeground(Color.RED);
-        lblUsuario.setText("Bienvenido "+ usuario);
-        
+        lblUsuario.setText("Bienvenido " + usuario);
+
     }
+
     private void ponerUsuarioLogueado() {
 
-            if (Utilidades.usuario == null) {
-                this.mnuEmpleadoLogueado.setText("(Anónimo)");
-            } else {
-                this.mnuEmpleadoLogueado.setText("(" + Utilidades.usuario.getUser() + ")");
-                usuario_activo(Utilidades.usuario.getNombres()+" "+Utilidades.usuario.getApellidos());
-            }
-
+        if (Utilidades.usuario == null) {
+            this.mnuEmpleadoLogueado.setText("(Anónimo)");
+        } else {
+            this.mnuEmpleadoLogueado.setText("(" + Utilidades.usuario.getUser() + ")");
+            usuario_activo(Utilidades.usuario.getNombres() + " " + Utilidades.usuario.getApellidos());
         }
+
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -171,15 +189,14 @@ public class GUIMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVerMapaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerMapaActionPerformed
-        // TODO add your handling code here:
+        vistaMapa.mostrarMapa();
     }//GEN-LAST:event_btnVerMapaActionPerformed
 
     private void btnConsConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsConductorActionPerformed
-       GUIBusquedaConductor ins = new GUIBusquedaConductor();
-        ins.setMaximizable(true);
 
-        dskEscritorio.add(ins);
-        ins.show();
+        busqueda.setMaximizable(true);
+        dskEscritorio.add(busqueda);
+        busqueda.show();
     }//GEN-LAST:event_btnConsConductorActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
@@ -187,8 +204,8 @@ public class GUIMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_btnSalirActionPerformed
 
     private void menAcercadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menAcercadeActionPerformed
-         String str = "Gestion de parqueadero \n"
-                + "Version 0.1 - Primera entrega \n"
+        String str = "Gestion de parqueadero \n"
+                + "Version 0.2 - Segunda entrega \n"
                 + "Universidad del Cauca";
         Utilidades.mensajeExito(str, "Acerca de");
     }//GEN-LAST:event_menAcercadeActionPerformed
@@ -196,7 +213,6 @@ public class GUIMenu extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnConsConductor;

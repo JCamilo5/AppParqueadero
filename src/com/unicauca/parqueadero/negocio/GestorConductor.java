@@ -89,9 +89,12 @@ public class GestorConductor extends AModel {
      * @param cedula
      * @return 
      */
-    public String consultarRoles(String cedula) {
-        String rol = servicioConductores.consultarRoles(cedula);
-        return rol;
+   
+    public boolean asociarRol(String cedula,String rol){
+        boolean exito = false;
+        String json = servicioConductores.asociarRol(cedula, rol);
+        
+        return exito;
     }
     /**
      * Agregar un vehiculo a un conductor
@@ -143,10 +146,6 @@ public class GestorConductor extends AModel {
         return lista_vehiculos;
     }
     
-    private ArrayList<String> deserializarRoles(String arrayJsonSerializado){
-        System.out.println(arrayJsonSerializado);
-        return null;
-    }
 
     private ArrayList<Vehiculo> deserializarVehiculos(String arrayJsonSerializado) {
         Vehiculo[] misVehiculos = new Gson().fromJson(arrayJsonSerializado, Vehiculo[].class);
@@ -167,7 +166,8 @@ public class GestorConductor extends AModel {
         String apellidos = propiedades.getProperty("apellidos");
         String genero = propiedades.getProperty("genero");
         String fechaNaci = propiedades.getProperty("fechaNaci");
-        Conductor miConductor = new Conductor(cedula, nombres, apellidos, genero, fechaNaci);
+        String rol = propiedades.getProperty("rol");
+        Conductor miConductor = new Conductor(cedula, nombres, apellidos, genero, fechaNaci,rol);
         return miConductor;
     }
 }

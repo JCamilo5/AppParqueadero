@@ -14,6 +14,8 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -22,17 +24,35 @@ import javax.swing.table.JTableHeader;
  *
  * @author JuanCamilo
  */
-public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
+public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements Observer{
 
     /**
      * Creates new form GUIBusquedaConductor
      */
+    private GUIParqueaderoController pController;
+    private GestorConductor modelo;
+    private GUIRegistroConductor registroCon;
+    private String c_cedula;
+    private String v_placa;
+
     public GUIBusquedaConductor() {
         initComponents();
         inicializarTabla();
         this.setSize(1000, 600);
+        this.txtDocumento.requestFocus();
     }
-    
+
+    public void setPController(GUIParqueaderoController controller) {
+        this.pController = controller;
+    }
+
+    public void setModelo(GestorConductor modelo) {
+        this.modelo = modelo;
+    }
+
+    public void setRegistroCon(GUIRegistroConductor registro) {
+        this.registroCon = registro;
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -54,10 +74,7 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
         lblTituloIngrese = new javax.swing.JLabel();
         pblCampo = new javax.swing.JPanel();
         txtDocumento = new javax.swing.JTextField();
-        lblSelecionTipoDoc = new javax.swing.JLabel();
         pnlTipoDocumento = new javax.swing.JPanel();
-        rbCarnet = new javax.swing.JRadioButton();
-        rbCedula = new javax.swing.JRadioButton();
         btnConsultar = new javax.swing.JButton();
 
         setFrameIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/buscar.png"))); // NOI18N
@@ -78,6 +95,12 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
         btnAsignarPuesto.setBackground(new java.awt.Color(0, 204, 204));
         btnAsignarPuesto.setFont(new java.awt.Font("Ebrima", 0, 14)); // NOI18N
         btnAsignarPuesto.setText("Asignar Puesto");
+        btnAsignarPuesto.setEnabled(false);
+        btnAsignarPuesto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAsignarPuestoActionPerformed(evt);
+            }
+        });
         getContentPane().add(btnAsignarPuesto, java.awt.BorderLayout.PAGE_END);
 
         pnlResultados.setLayout(new java.awt.BorderLayout());
@@ -110,6 +133,11 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
         ));
         tblResultado.setGridColor(new java.awt.Color(51, 255, 255));
         tblResultado.setSelectionBackground(new java.awt.Color(0, 153, 153));
+        tblResultado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblResultadoMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tblResultado);
 
         pblTabla.add(jScrollPane1, java.awt.BorderLayout.CENTER);
@@ -150,36 +178,8 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
 
         pnlBusqueda.add(pblCampo);
 
-        lblSelecionTipoDoc.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
-        lblSelecionTipoDoc.setForeground(new java.awt.Color(255, 255, 255));
-        lblSelecionTipoDoc.setText("Seleccione tipo de documento");
-        pnlBusqueda.add(lblSelecionTipoDoc);
-
         pnlTipoDocumento.setBackground(new java.awt.Color(0, 153, 153));
         pnlTipoDocumento.setLayout(new java.awt.GridLayout(2, 1));
-
-        rbCarnet.setBackground(new java.awt.Color(0, 102, 102));
-        rbCarnet.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
-        rbCarnet.setForeground(new java.awt.Color(255, 255, 255));
-        rbCarnet.setText("Carnet  ");
-        rbCarnet.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbCarnetActionPerformed(evt);
-            }
-        });
-        pnlTipoDocumento.add(rbCarnet);
-
-        rbCedula.setBackground(new java.awt.Color(0, 102, 102));
-        rbCedula.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
-        rbCedula.setForeground(new java.awt.Color(255, 255, 255));
-        rbCedula.setText("Cedula");
-        rbCedula.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                rbCedulaActionPerformed(evt);
-            }
-        });
-        pnlTipoDocumento.add(rbCedula);
-
         pnlBusqueda.add(pnlTipoDocumento);
 
         btnConsultar.setBackground(new java.awt.Color(0, 204, 204));
@@ -201,30 +201,49 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
-        GestorConductor gestor = new GestorConductor();
-        String cedula = txtDocumento.getText();
-        Conductor aux = gestor.consultarConductor(cedula);//Guarda el conductor con el numero de cedula ingresado
-        if(aux == null){
-            Utilidades.mensajeAdvertencia("No se encuentró conductor con el numero ingresado,debera agregarse manualmente", "No se encontro el conductor");
-            GUIRegistroConductor registro = new GUIRegistroConductor();
-        }else{
-            lblInfoConductor.setText("INFORMACION: Nombre: "+aux.getNombres()+" Apellidos: "+aux.getApellidos()+" Rol: "+gestor.consultarRoles(cedula));
-            if(!gestor.obtenerVehiculosCon(cedula).isEmpty()){
-                llenarTabla(gestor.obtenerVehiculosCon(cedula));
-            }else{
-                Utilidades.mensajeAdvertencia("No se encuentran vehiculos asociados,el registro del vehiculo se debe hacer manualmentes", "No se encuentran vehiculos asociados");
-                GUIRegistroVehiculo registro = new GUIRegistroVehiculo();
+        if (txtDocumento.getText().length() > 0) {
+            
+            String cedula = txtDocumento.getText();
+            Conductor aux = modelo.consultarConductor(cedula);//Guarda el conductor con el numero de cedula ingresado
+            if (aux == null) {
+                Utilidades.mensajeAdvertencia("No se encuentró conductor con el numero ingresado,debera agregarse manualmente", "No se encontro el conductor");
+                GUIRegistroConductor registro = new GUIRegistroConductor();
+            } else {
+                lblInfoConductor.setText("INFORMACION: Nombre: " + aux.getNombres() + " Apellidos: " + aux.getApellidos() + " Rol: " + aux.getRol());
+
+                if (!modelo.obtenerVehiculosCon(cedula).isEmpty()) {
+                    llenarTabla(modelo.obtenerVehiculosCon(cedula));
+                    c_cedula = aux.getCedula();
+
+                } else {
+                    Utilidades.mensajeAdvertencia("No se encuentran vehiculos asociados,el registro del vehiculo se debe hacer manualmentes", "No se encuentran vehiculos asociados");
+                    GUIRegistroVehiculo registro = new GUIRegistroVehiculo();
+                }
             }
+        }else{
+            Utilidades.mensajeAdvertencia("Por favor ingrese un documento", "Campo Vacio");
+            this.txtDocumento.requestFocus();
         }
     }//GEN-LAST:event_btnConsultarActionPerformed
 
-    private void rbCarnetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCarnetActionPerformed
-       rbCedula.setSelected(false);
-    }//GEN-LAST:event_rbCarnetActionPerformed
+    private void btnAsignarPuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarPuestoActionPerformed
+        pController.setCedula(c_cedula);
+        pController.setPlaca(v_placa);
+        pController.iniciar();
+        this.txtDocumento.setText("");
+        inicializarTabla();
+        lblInfoConductor.setText("INFORMACION: ");
+        this.btnAsignarPuesto.setEnabled(false);
+        this.txtDocumento.requestFocus();
 
-    private void rbCedulaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbCedulaActionPerformed
-        rbCarnet.setSelected(false);
-    }//GEN-LAST:event_rbCedulaActionPerformed
+    }//GEN-LAST:event_btnAsignarPuestoActionPerformed
+
+    private void tblResultadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblResultadoMouseClicked
+        int seleccionar = tblResultado.rowAtPoint(evt.getPoint());
+        String placa = String.valueOf(tblResultado.getValueAt(seleccionar, 0));
+        v_placa = placa;
+        this.btnAsignarPuesto.setEnabled(true);
+    }//GEN-LAST:event_tblResultadoMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -232,7 +251,6 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnConsultar;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblInfoConductor;
-    private javax.swing.JLabel lblSelecionTipoDoc;
     private javax.swing.JLabel lblTituloIngrese;
     private javax.swing.JPanel pblCampo;
     private javax.swing.JPanel pblTabla;
@@ -240,8 +258,6 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
     private javax.swing.JPanel pnlBusqueda;
     private javax.swing.JPanel pnlResultados;
     private javax.swing.JPanel pnlTipoDocumento;
-    private javax.swing.JRadioButton rbCarnet;
-    private javax.swing.JRadioButton rbCedula;
     private javax.swing.JTable tblResultado;
     private javax.swing.JTextField txtDocumento;
     // End of variables declaration//GEN-END:variables
@@ -254,8 +270,8 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
                 }
         ));
     }
-    
-     private void llenarTabla(ArrayList<Vehiculo> vehiculos) {
+
+    private void llenarTabla(ArrayList<Vehiculo> vehiculos) {
         this.inicializarTabla();
         DefaultTableModel model = (DefaultTableModel) tblResultado.getModel();
 
@@ -267,8 +283,13 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame {
             model.addRow(rowData);
         }
     }
-      
-    public JButton getBtnConsultar(){
+
+    public JButton getBtnConsultar() {
         return this.btnConsultar;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+         //Todo volver a leer la cedula y hacer todo
     }
 }

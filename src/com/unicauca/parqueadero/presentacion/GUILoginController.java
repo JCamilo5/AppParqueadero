@@ -27,10 +27,12 @@ public class GUILoginController implements ActionListener {
     private GUIAutenticacion vista;
     private GestorUsuarios modelo;
     private Utilidades utilidades;
+    private GUIMenu menu;
     
-    public GUILoginController(GUIAutenticacion vista, GestorUsuarios modelo){
+    public GUILoginController(GUIAutenticacion vista, GestorUsuarios modelo,GUIMenu menu){
         this.vista = vista;
         this.modelo = modelo;
+        this.menu = menu;
         utilidades = new Utilidades();
         this.vista.getIngresar().addActionListener(this);
     }
@@ -45,12 +47,13 @@ public class GUILoginController implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         String usuario = vista.getUsuer();
         String password = vista.getPassword();
-        utilidades.usuario = modelo.consultarUsuario(usuario, password);
+        
         if(modelo.consultarUsuario(usuario, password) != null){
             vista.dispose();
-            GUIMenu vistaMenu = new GUIMenu(utilidades.usuario.getPrivilegio());
-            vistaMenu.setExtendedState(MAXIMIZED_BOTH);
-            vistaMenu.setVisible(true);
+            menu.setPrivilegio(modelo.consultarUsuario(usuario, password).getPrivilegio());
+            menu.usuario_activo(usuario);
+            Utilidades.usuario = modelo.consultarUsuario(usuario, password);
+            menu.iniciar();
             
         }else{
             utilidades.mensajeError("Usuario / Contraseña Incorrectos", "Error de Autenticacion");
