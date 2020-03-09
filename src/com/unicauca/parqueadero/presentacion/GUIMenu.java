@@ -16,8 +16,11 @@ import java.awt.Toolkit;
  */
 public class GUIMenu extends javax.swing.JFrame {
     private GUIBusquedaConductor busqueda;
-    private GUIParqueaderoController vistaMapa;
+    private GUIParqueaderoController parqueController;
+    private GUIRegistroVigilante vistaRegVig;
     private String privilegio;
+    private String ubicacion;
+    
 
     /**
      * Creates new form test
@@ -27,8 +30,15 @@ public class GUIMenu extends javax.swing.JFrame {
         initComponents();
 
     }
+    public void setUbicacion(String ubi){
+        this.ubicacion = ubi;
+    }
+ 
+    public void setVistaRegVig(GUIRegistroVigilante vista){
+        this.vistaRegVig = vista;
+    }
     public void setVistaMapa(GUIParqueaderoController pc){
-        this.vistaMapa = pc;
+        this.parqueController = pc;
     }
     public void setBusqueda(GUIBusquedaConductor vista){
         this.busqueda = vista;
@@ -46,11 +56,30 @@ public class GUIMenu extends javax.swing.JFrame {
             this.sbMnuAyuda.setVisible(true);
             this.sbMnuOpcAdmin.setVisible(true);
             this.sbMnuOpciones.setVisible(true);
+            if(ubicacion.equals("Entrada")){
+                Utilidades.estrategia = "Entrada";
+
+            }
+            if(ubicacion.equals("Salida")){
+                Utilidades.estrategia = "Salida";              
+            }
+            
         }
         if (privilegio.equals("vigilante")) {
             this.sbMnuAyuda.setVisible(true);
             this.sbMnuOpcAdmin.setVisible(false);
             this.sbMnuOpciones.setVisible(true);
+            System.out.println("Antes de preguntar ubicacion");
+            if(ubicacion.equals("Entrada")){
+                Utilidades.estrategia = "Entrada";
+                this.btnSalidaConductor.setVisible(false);
+
+            }
+            if(ubicacion.equals("Salida")){
+                Utilidades.estrategia = "Salida";
+                this.btnConsConductor.setVisible(false);
+                
+            }
         }
         this.setExtendedState(MAXIMIZED_BOTH);
         ponerUsuarioLogueado();
@@ -89,12 +118,13 @@ public class GUIMenu extends javax.swing.JFrame {
         mbParqueadero = new javax.swing.JMenuBar();
         sbMnuOpciones = new javax.swing.JMenu();
         btnConsConductor = new javax.swing.JMenuItem();
+        btnSalidaConductor = new javax.swing.JMenuItem();
         btnVerMapa = new javax.swing.JMenuItem();
         btnSalir = new javax.swing.JMenuItem();
         sbMnuAyuda = new javax.swing.JMenu();
         menAcercade = new javax.swing.JMenuItem();
         sbMnuOpcAdmin = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
+        sbMnuRegVigilante = new javax.swing.JMenuItem();
         mnuEmpleadoLogueado = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -114,13 +144,21 @@ public class GUIMenu extends javax.swing.JFrame {
         sbMnuOpciones.setText("Opciones");
 
         btnConsConductor.setBackground(new java.awt.Color(153, 153, 255));
-        btnConsConductor.setText("Consultar informacion del conductor");
+        btnConsConductor.setText("Ingresar Conductor");
         btnConsConductor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsConductorActionPerformed(evt);
             }
         });
         sbMnuOpciones.add(btnConsConductor);
+
+        btnSalidaConductor.setText("Registrar Salida");
+        btnSalidaConductor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalidaConductorActionPerformed(evt);
+            }
+        });
+        sbMnuOpciones.add(btnSalidaConductor);
 
         btnVerMapa.setText("Ver Mapa");
         btnVerMapa.addActionListener(new java.awt.event.ActionListener() {
@@ -154,8 +192,13 @@ public class GUIMenu extends javax.swing.JFrame {
 
         sbMnuOpcAdmin.setText("Opciones de Administrador");
 
-        jMenuItem1.setText("Agregar Vigilante");
-        sbMnuOpcAdmin.add(jMenuItem1);
+        sbMnuRegVigilante.setText("Agregar Vigilante");
+        sbMnuRegVigilante.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sbMnuRegVigilanteActionPerformed(evt);
+            }
+        });
+        sbMnuOpcAdmin.add(sbMnuRegVigilante);
 
         mbParqueadero.add(sbMnuOpcAdmin);
 
@@ -189,7 +232,7 @@ public class GUIMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnVerMapaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVerMapaActionPerformed
-        vistaMapa.mostrarMapa();
+        parqueController.mostrarMapa();
     }//GEN-LAST:event_btnVerMapaActionPerformed
 
     private void btnConsConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsConductorActionPerformed
@@ -210,16 +253,25 @@ public class GUIMenu extends javax.swing.JFrame {
         Utilidades.mensajeExito(str, "Acerca de");
     }//GEN-LAST:event_menAcercadeActionPerformed
 
+    private void sbMnuRegVigilanteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sbMnuRegVigilanteActionPerformed
+        vistaRegVig.iniciar();
+    }//GEN-LAST:event_sbMnuRegVigilanteActionPerformed
+
+    private void btnSalidaConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalidaConductorActionPerformed
+        parqueController.iniciar();
+        parqueController.lanzarHilo();
+    }//GEN-LAST:event_btnSalidaConductorActionPerformed
+
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnConsConductor;
+    private javax.swing.JMenuItem btnSalidaConductor;
     private javax.swing.JMenuItem btnSalir;
     private javax.swing.JMenuItem btnVerMapa;
     private javax.swing.JDesktopPane dskEscritorio;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JLabel lblUsuario;
     private javax.swing.JMenuBar mbParqueadero;
     private javax.swing.JMenuItem menAcercade;
@@ -227,5 +279,6 @@ public class GUIMenu extends javax.swing.JFrame {
     private javax.swing.JMenu sbMnuAyuda;
     private javax.swing.JMenu sbMnuOpcAdmin;
     private javax.swing.JMenu sbMnuOpciones;
+    private javax.swing.JMenuItem sbMnuRegVigilante;
     // End of variables declaration//GEN-END:variables
 }

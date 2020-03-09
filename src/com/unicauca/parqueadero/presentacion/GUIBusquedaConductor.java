@@ -32,16 +32,21 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
     private GUIParqueaderoController pController;
     private GestorConductor modelo;
     private GUIRegistroConductor registroCon;
+    private GUIRegistroVehiculo regisVehi;
     private String c_cedula;
     private String v_placa;
 
     public GUIBusquedaConductor() {
         initComponents();
         inicializarTabla();
-        this.setSize(1000, 600);
+        this.setSize(1000, 400);
+        this.setResizable(true);
+        this.setClosable(true);
         this.txtDocumento.requestFocus();
     }
-
+    public void setRegVehiculo(GUIRegistroVehiculo vista){
+        this.regisVehi = vista;
+    }
     public void setPController(GUIParqueaderoController controller) {
         this.pController = controller;
     }
@@ -70,6 +75,8 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
         pblTabla = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblResultado = new javax.swing.JTable();
+        pnlAddVehiculo = new javax.swing.JPanel();
+        btnAddVehiculo = new javax.swing.JButton();
         pnlBusqueda = new javax.swing.JPanel();
         lblTituloIngrese = new javax.swing.JLabel();
         pblCampo = new javax.swing.JPanel();
@@ -92,8 +99,9 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
 
         getContentPane().add(pnlBotones, java.awt.BorderLayout.SOUTH);
 
-        btnAsignarPuesto.setBackground(new java.awt.Color(0, 204, 204));
-        btnAsignarPuesto.setFont(new java.awt.Font("Ebrima", 0, 14)); // NOI18N
+        btnAsignarPuesto.setBackground(new java.awt.Color(0, 51, 51));
+        btnAsignarPuesto.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        btnAsignarPuesto.setForeground(new java.awt.Color(255, 255, 255));
         btnAsignarPuesto.setText("Asignar Puesto");
         btnAsignarPuesto.setEnabled(false);
         btnAsignarPuesto.addActionListener(new java.awt.event.ActionListener() {
@@ -141,6 +149,22 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
         jScrollPane1.setViewportView(tblResultado);
 
         pblTabla.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        pnlAddVehiculo.setBackground(new java.awt.Color(0, 102, 102));
+        pnlAddVehiculo.setLayout(new java.awt.BorderLayout());
+
+        btnAddVehiculo.setBackground(new java.awt.Color(0, 51, 51));
+        btnAddVehiculo.setForeground(new java.awt.Color(255, 255, 255));
+        btnAddVehiculo.setText("Agregar Vehículo");
+        btnAddVehiculo.setEnabled(false);
+        btnAddVehiculo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddVehiculoActionPerformed(evt);
+            }
+        });
+        pnlAddVehiculo.add(btnAddVehiculo, java.awt.BorderLayout.NORTH);
+
+        pblTabla.add(pnlAddVehiculo, java.awt.BorderLayout.LINE_END);
 
         pnlResultados.add(pblTabla, java.awt.BorderLayout.CENTER);
 
@@ -207,17 +231,20 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
             Conductor aux = modelo.consultarConductor(cedula);//Guarda el conductor con el numero de cedula ingresado
             if (aux == null) {
                 Utilidades.mensajeAdvertencia("No se encuentró conductor con el numero ingresado,debera agregarse manualmente", "No se encontro el conductor");
-                GUIRegistroConductor registro = new GUIRegistroConductor();
+                registroCon.setCedula(cedula);
+                registroCon.iniciar();
             } else {
                 lblInfoConductor.setText("INFORMACION: Nombre: " + aux.getNombres() + " Apellidos: " + aux.getApellidos() + " Rol: " + aux.getRol());
 
                 if (!modelo.obtenerVehiculosCon(cedula).isEmpty()) {
                     llenarTabla(modelo.obtenerVehiculosCon(cedula));
+                    this.btnAddVehiculo.setEnabled(true);
                     c_cedula = aux.getCedula();
 
                 } else {
                     Utilidades.mensajeAdvertencia("No se encuentran vehiculos asociados,el registro del vehiculo se debe hacer manualmentes", "No se encuentran vehiculos asociados");
-                    GUIRegistroVehiculo registro = new GUIRegistroVehiculo();
+                    regisVehi.setCedula(cedula);
+                    regisVehi.iniciar();
                 }
             }
         }else{
@@ -230,11 +257,14 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
         pController.setCedula(c_cedula);
         pController.setPlaca(v_placa);
         pController.iniciar();
+        pController.lanzarHilo();
+        pController.detenrHilo();
         this.txtDocumento.setText("");
         inicializarTabla();
         lblInfoConductor.setText("INFORMACION: ");
         this.btnAsignarPuesto.setEnabled(false);
         this.txtDocumento.requestFocus();
+        this.btnAddVehiculo.setEnabled(false);
 
     }//GEN-LAST:event_btnAsignarPuestoActionPerformed
 
@@ -245,8 +275,20 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
         this.btnAsignarPuesto.setEnabled(true);
     }//GEN-LAST:event_tblResultadoMouseClicked
 
+    private void btnAddVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddVehiculoActionPerformed
+        if(!txtDocumento.getText().isEmpty()){
+            String cedula;
+            cedula = txtDocumento.getText();
+            regisVehi.setCedula(cedula);
+            regisVehi.iniciar();
+        }else{
+            Utilidades.mensajeError("Faltan Campos por completar", "Campos Facios");
+        }
+    }//GEN-LAST:event_btnAddVehiculoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddVehiculo;
     private javax.swing.JButton btnAsignarPuesto;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JScrollPane jScrollPane1;
@@ -254,6 +296,7 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
     private javax.swing.JLabel lblTituloIngrese;
     private javax.swing.JPanel pblCampo;
     private javax.swing.JPanel pblTabla;
+    private javax.swing.JPanel pnlAddVehiculo;
     private javax.swing.JPanel pnlBotones;
     private javax.swing.JPanel pnlBusqueda;
     private javax.swing.JPanel pnlResultados;
@@ -290,6 +333,6 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
 
     @Override
     public void update(Observable o, Object arg) {
-         //Todo volver a leer la cedula y hacer todo
+         btnConsultar.doClick();
     }
 }

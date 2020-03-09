@@ -9,7 +9,7 @@ package com.unicauca.parqueadero.acceso;
  *
  * @author JuanCamilo
  */
-public interface IServicioVigilantes {
+public interface IServiciosVigilantes {
     public String agregarVigilante(String ced,String emp,String usua,String noms,
             String apells,String genero,String fechaNaci,String contra,String puesto); 
 }

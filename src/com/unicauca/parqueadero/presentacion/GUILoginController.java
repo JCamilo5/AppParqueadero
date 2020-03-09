@@ -28,42 +28,75 @@ public class GUILoginController implements ActionListener {
     private GestorUsuarios modelo;
     private Utilidades utilidades;
     private GUIMenu menu;
-    
-    public GUILoginController(GUIAutenticacion vista, GestorUsuarios modelo,GUIMenu menu){
+    private String estrategia;
+
+    public GUILoginController(GUIAutenticacion vista, GestorUsuarios modelo, GUIMenu menu) {
         this.vista = vista;
         this.modelo = modelo;
         this.menu = menu;
         utilidades = new Utilidades();
-        this.vista.getIngresar().addActionListener(this);
+        estrategia = "Entrada";
+
     }
-    public void iniciar(){
+
+    public void iniciar() {
         vista.setTitle("INICIAR SESION");
         vista.setLocationRelativeTo(null);
         vista.setResizable(false);
         vista.setVisible(true);
+        asignarBotones();
     }
-    
+
     @Override
     public void actionPerformed(ActionEvent e) {
-        String usuario = vista.getUsuer();
-        String password = vista.getPassword();
-        
-        if(modelo.consultarUsuario(usuario, password) != null){
-            vista.dispose();
-            menu.setPrivilegio(modelo.consultarUsuario(usuario, password).getPrivilegio());
-            menu.usuario_activo(usuario);
-            Utilidades.usuario = modelo.consultarUsuario(usuario, password);
-            menu.iniciar();
+        switch (e.getActionCommand()) {
+            case "Ingresar":
+                String usuario = vista.getUsuer();
+                String password = vista.getPassword();
+
+                if (modelo.consultarUsuario(usuario, password) != null) {
+                    if(vista.getSalida().isSelected()){
+                        menu.setUbicacion("Salida");
+                    }else{
+                        menu.setUbicacion("Entrada");
+                    }
+                    menu.setPrivilegio(modelo.consultarUsuario(usuario, password).getPrivilegio());
+                    menu.usuario_activo(usuario); 
+                    vista.dispose();
+                    menu.iniciar();
+
+                } else {
+                    utilidades.mensajeError("Usuario / Contraseña Incorrectos", "Error de Autenticacion");
+                }
+                break;
             
-        }else{
-            utilidades.mensajeError("Usuario / Contraseña Incorrectos", "Error de Autenticacion");
+            case "Entrada":
+                Utilidades.estrategia = "Entrada";
+                break;
+            
+            case "Salida":
+                Utilidades.estrategia = "Salida";
+                break;
         }
-        
+
     }
 
-  
+    public void asignarBotones() {
+        vista.getIngresar().addActionListener(this);
+        vista.getSalida().addActionListener(this);
+        vista.getEntrada().addActionListener(this);
 
-    
+        vista.getEntrada().setActionCommand("Entrada");
+        vista.getSalida().setActionCommand("Salida");
+        vista.getBotonIngresar().setActionCommand("Ingresar");
+    }
+
+    public String getEstrategia() {
+        return estrategia;
+    }
+
+    public void setEstrategia(String estrategia) {
+        this.estrategia = estrategia;
+    }
 
 }
-

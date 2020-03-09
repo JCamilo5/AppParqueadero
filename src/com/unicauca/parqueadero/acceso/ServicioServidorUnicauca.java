@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author JuanCamilo
  */
-public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosConductores, IServiciosParqueadero, IServicioVigilantes {
+public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosConductores, IServiciosParqueadero, IServiciosVigilantes {
 
     private Socket socket;
     private Scanner entradaDecorada;
@@ -257,6 +257,21 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         try {
             conectar(IP_SERVIDOR, PUERTO);
             respuesta = leerFlujoEntradaSalida(accion+","+ced+","+emp+","+usua+","+noms+","+apells+","+genero+","+fechaNaci+","+contra+","+puesto);
+            cerrarFlujos();
+            desconectar();
+        } catch (IOException ex) {
+            Logger.getLogger(ServicioServidorUnicauca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return respuesta;
+    }
+
+    @Override
+    public String registrarSalida(String bahia) {
+        String respuesta = null;
+        String accion = "Registrar Salida";
+        try {
+            conectar(IP_SERVIDOR, PUERTO);
+            respuesta = leerFlujoEntradaSalida(accion+","+bahia);
             cerrarFlujos();
             desconectar();
         } catch (IOException ex) {

@@ -25,6 +25,7 @@ public class Utilidades {
     public static Usuario usuario;
     public static String placa;
     public static String cedula;
+    public static String estrategia;
 
     /**
      * Transforma una fecha de String a Date

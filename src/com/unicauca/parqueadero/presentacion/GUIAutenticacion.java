@@ -11,6 +11,7 @@ import javax.swing.JOptionPane;
 import java.awt.Image;
 import java.awt.Toolkit;
 import javax.swing.JButton;
+import javax.swing.JRadioButton;
 
 /**
  *
@@ -28,6 +29,7 @@ public class GUIAutenticacion extends javax.swing.JFrame {
     }
 
     private void myInit(){
+        this.txtUsuario.requestFocus();
         this.setLocation(400, 250);
         Image icon = Toolkit.getDefaultToolkit().getImage("./src/recursos/logo.png");
         this.setSize(480, 185);
@@ -51,6 +53,7 @@ public class GUIAutenticacion extends javax.swing.JFrame {
         pnlTitulo = new javax.swing.JPanel();
         lblParqueadero = new javax.swing.JLabel();
         pnlIngreso = new javax.swing.JPanel();
+        pnlDatos = new javax.swing.JPanel();
         pnlUsuario = new javax.swing.JPanel();
         lblUsuario = new javax.swing.JLabel();
         pnlUserField = new javax.swing.JPanel();
@@ -59,6 +62,9 @@ public class GUIAutenticacion extends javax.swing.JFrame {
         lblPassword = new javax.swing.JLabel();
         pnlContrasenaField = new javax.swing.JPanel();
         PasswordField = new javax.swing.JPasswordField();
+        pnlUbicacion = new javax.swing.JPanel();
+        rbEntrada = new javax.swing.JRadioButton();
+        rbSalida = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -66,7 +72,7 @@ public class GUIAutenticacion extends javax.swing.JFrame {
         pnlLogin.setLayout(new java.awt.BorderLayout());
 
         pnlBotones.setBackground(new java.awt.Color(255, 255, 255));
-        pnlBotones.setLayout(new java.awt.GridLayout());
+        pnlBotones.setLayout(new java.awt.GridLayout(1, 0));
 
         btnIngresar.setBackground(new java.awt.Color(0, 153, 153));
         btnIngresar.setFont(new java.awt.Font("Century Gothic", 1, 14)); // NOI18N
@@ -107,7 +113,9 @@ public class GUIAutenticacion extends javax.swing.JFrame {
 
         pnlLogin.add(pnlTitulo, java.awt.BorderLayout.NORTH);
 
-        pnlIngreso.setLayout(new java.awt.GridLayout(2, 4));
+        pnlIngreso.setLayout(new java.awt.BorderLayout());
+
+        pnlDatos.setLayout(new java.awt.GridLayout(2, 4));
 
         pnlUsuario.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -118,12 +126,12 @@ public class GUIAutenticacion extends javax.swing.JFrame {
         lblUsuario.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         pnlUsuario.add(lblUsuario);
 
-        pnlIngreso.add(pnlUsuario);
+        pnlDatos.add(pnlUsuario);
 
-        pnlUserField.setLayout(new java.awt.GridLayout());
+        pnlUserField.setLayout(new java.awt.GridLayout(1, 0));
         pnlUserField.add(txtUsuario);
 
-        pnlIngreso.add(pnlUserField);
+        pnlDatos.add(pnlUserField);
 
         pnlContrasena.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -134,12 +142,41 @@ public class GUIAutenticacion extends javax.swing.JFrame {
         lblPassword.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
         pnlContrasena.add(lblPassword);
 
-        pnlIngreso.add(pnlContrasena);
+        pnlDatos.add(pnlContrasena);
 
-        pnlContrasenaField.setLayout(new java.awt.GridLayout());
+        pnlContrasenaField.setLayout(new java.awt.GridLayout(1, 0));
         pnlContrasenaField.add(PasswordField);
 
-        pnlIngreso.add(pnlContrasenaField);
+        pnlDatos.add(pnlContrasenaField);
+
+        pnlIngreso.add(pnlDatos, java.awt.BorderLayout.CENTER);
+
+        pnlUbicacion.setBackground(new java.awt.Color(255, 255, 255));
+
+        rbEntrada.setBackground(new java.awt.Color(255, 255, 255));
+        rbEntrada.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        rbEntrada.setForeground(new java.awt.Color(0, 102, 102));
+        rbEntrada.setSelected(true);
+        rbEntrada.setText("Entrada");
+        rbEntrada.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rbEntradaMouseClicked(evt);
+            }
+        });
+        pnlUbicacion.add(rbEntrada);
+
+        rbSalida.setBackground(new java.awt.Color(255, 255, 255));
+        rbSalida.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
+        rbSalida.setForeground(new java.awt.Color(0, 102, 102));
+        rbSalida.setText("Salida");
+        rbSalida.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rbSalidaMouseClicked(evt);
+            }
+        });
+        pnlUbicacion.add(rbSalida);
+
+        pnlIngreso.add(pnlUbicacion, java.awt.BorderLayout.SOUTH);
 
         pnlLogin.add(pnlIngreso, java.awt.BorderLayout.CENTER);
 
@@ -155,6 +192,24 @@ public class GUIAutenticacion extends javax.swing.JFrame {
     private void btnIngresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarActionPerformed
 
     }//GEN-LAST:event_btnIngresarActionPerformed
+
+    public JButton getBotonIngresar(){
+        return this.btnIngresar;
+    }
+    public JRadioButton getEntrada(){
+        return this.rbEntrada;
+    }
+     public JRadioButton getSalida(){
+        return this.rbSalida;
+    }
+    
+    private void rbEntradaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbEntradaMouseClicked
+        this.rbSalida.setSelected(false);
+    }//GEN-LAST:event_rbEntradaMouseClicked
+
+    private void rbSalidaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbSalidaMouseClicked
+        this.rbEntrada.setSelected(false);
+    }//GEN-LAST:event_rbSalidaMouseClicked
     //Lo que hay en este metodo deberia implementarlo en controlador
     /**
      * @param args the command line arguments
@@ -202,11 +257,15 @@ public class GUIAutenticacion extends javax.swing.JFrame {
     private javax.swing.JPanel pnlBotones;
     private javax.swing.JPanel pnlContrasena;
     private javax.swing.JPanel pnlContrasenaField;
+    private javax.swing.JPanel pnlDatos;
     private javax.swing.JPanel pnlIngreso;
     private javax.swing.JPanel pnlLogin;
     private javax.swing.JPanel pnlTitulo;
+    private javax.swing.JPanel pnlUbicacion;
     private javax.swing.JPanel pnlUserField;
     private javax.swing.JPanel pnlUsuario;
+    private javax.swing.JRadioButton rbEntrada;
+    private javax.swing.JRadioButton rbSalida;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
 
@@ -223,6 +282,12 @@ public class GUIAutenticacion extends javax.swing.JFrame {
         }
         return password;
     }
-   
+   public String getUbicacion(){
+       String ubicacion = "entrada";
+       if(rbSalida.isSelected()){
+           ubicacion = "salida";
+       }
+       return ubicacion;
+   }
   
 }

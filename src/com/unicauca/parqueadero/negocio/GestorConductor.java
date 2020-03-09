@@ -18,7 +18,7 @@ import mvcf.AModel;
  *
  * @author JuanCamilo
  */
-public class GestorConductor extends AModel {
+public class GestorConductor extends java.util.Observable {
 
     private IServiciosConductores servicioConductores;
     private Conductor conductor;
@@ -65,58 +65,76 @@ public class GestorConductor extends AModel {
     public void setRespuesta(String respuesta) {
         this.respuesta = respuesta;
     }
+
     /**
-     * Metodo que inserta un nuevo conductor,le pasa los datos al servidor 
-     * @param cedula 
+     * Metodo que inserta un nuevo conductor,le pasa los datos al servidor
+     *
+     * @param cedula
      * @param nombres
      * @param apellidos
      * @param genero
      * @param fechaNaci
      * @return true si la insercion es exitosa, false si falla
      */
-    public boolean agregarConductor(String cedula,String nombres, String apellidos, String genero,String fechaNaci){
-        boolean exito =false;
-        try{
-            servicioConductores.agregarConductor(cedula, nombres, apellidos, genero, fechaNaci);
+    public boolean agregarConductor(String cedula, String nombres, String apellidos, String genero, String fechaNaci) {
+        boolean exito = false;
+        respuesta = servicioConductores.agregarConductor(cedula, nombres, apellidos, genero, fechaNaci);
+        if (!respuesta.equals("Error")) {
             exito = true;
-        }catch(Exception e){
-            return exito;
         }
         return exito;
     }
+
     /**
      * Metodo que retorna el rol con mayor prioridad de un conductor
+     *
      * @param cedula
-     * @return 
+     * @return
      */
-   
-    public boolean asociarRol(String cedula,String rol){
+
+    public boolean asociarRol(String cedula, String rol) {
         boolean exito = false;
-        String json = servicioConductores.asociarRol(cedula, rol);
-        
+        respuesta = servicioConductores.asociarRol(cedula, rol);
+        if (!respuesta.equals("Error")) {
+            exito = true;
+        }
+
         return exito;
     }
+
     /**
      * Agregar un vehiculo a un conductor
+     *
      * @param cedula cedula del conductor
      * @param placa placa del vehiculo
      * @param marca marca del vehiculo
      * @param tipo tipo de vehiculo
      * @return respuesta del servidor
      */
-    public String agregarVehiculo(String placa,String marca,String tipo){
-        String json = servicioConductores.agregarVehiculo(placa, marca, tipo);
-        respuesta = json;
-        return json;
+    public boolean agregarVehiculo(String placa, String marca, String tipo) {
+        boolean exito = false;
+        respuesta = servicioConductores.agregarVehiculo(placa, marca, tipo);
+        if (!respuesta.equals("Error")) {
+            exito = true;
+        }
+        return exito;
     }
-    //Cambiar a bool para saber si funciono TODO
-    public String asociarVehiCond(String cedula,String placa){
-        String json = servicioConductores.asociarVehiCond(cedula, placa);
-        respuesta = json;
-        return json;
+
+    public boolean asociarVehiCond(String cedula, String placa) {
+        boolean exito = false;
+        respuesta = servicioConductores.asociarVehiCond(cedula, placa);
+        if (!respuesta.equals("Error")) {
+            exito = true;
+            setChanged();
+            notifyObservers();
+        }
+
+        return exito;
     }
+
     /**
      * Metodo que busca un conductor
+     *
      * @param cedula parametro por el cual se hace la busqueda
      * @return Conductor
      */
@@ -145,7 +163,6 @@ public class GestorConductor extends AModel {
         }
         return lista_vehiculos;
     }
-    
 
     private ArrayList<Vehiculo> deserializarVehiculos(String arrayJsonSerializado) {
         Vehiculo[] misVehiculos = new Gson().fromJson(arrayJsonSerializado, Vehiculo[].class);
@@ -167,7 +184,7 @@ public class GestorConductor extends AModel {
         String genero = propiedades.getProperty("genero");
         String fechaNaci = propiedades.getProperty("fechaNaci");
         String rol = propiedades.getProperty("rol");
-        Conductor miConductor = new Conductor(cedula, nombres, apellidos, genero, fechaNaci,rol);
+        Conductor miConductor = new Conductor(cedula, nombres, apellidos, genero, fechaNaci, rol);
         return miConductor;
     }
 }

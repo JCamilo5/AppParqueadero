@@ -16,7 +16,9 @@ import java.awt.Toolkit;
  */
 public class GUIRegistroVehiculo extends javax.swing.JFrame {
     private boolean registro = false;
-
+    private GestorConductor modelo;
+    private String v_placa; 
+    private String cedula;
     /**
      * Creates new form GUIRegistroAuto
      */
@@ -25,19 +27,29 @@ public class GUIRegistroVehiculo extends javax.swing.JFrame {
 
 
     }
-
+    public void setModelo(GestorConductor gestor){
+        this.modelo = gestor;
+    }
+    public void setCedula(String ced){
+        this.cedula = ced;
+    }
     public void iniciar() {
         this.setSize(500, 210);
         this.setTitle("REGISTRO DE VEHICULO");
         Image icon = Toolkit.getDefaultToolkit().getImage("./src/recursos/coche-deportivo.png");
         this.setIconImage(icon);
         this.cbxTipo.removeAllItems();
-        this.cbxTipo.addItem("moto");
-        this.cbxTipo.addItem("automovil");
+        this.cbxTipo.addItem("Moto");
+        this.cbxTipo.addItem("Automovil");
         this.setLocation(400, 250);
         this.setVisible(true);
     }
-
+    public boolean getRegistro(){
+        return registro;
+    } 
+    public String getPlaca(){
+        return v_placa;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -149,9 +161,10 @@ public class GUIRegistroVehiculo extends javax.swing.JFrame {
             tipo = cbxTipo.getSelectedItem().toString();
             try{
                 gestor.agregarVehiculo(placa, marca, tipo);
+                modelo.asociarVehiCond(cedula, placa);
                 Utilidades.mensajeExito("Vehiculo registrado con exito", "Exito");
                 registro = true;
-                Utilidades.placa = placa;
+                v_placa = placa;
                 this.dispose();
             }
             catch(Exception e){

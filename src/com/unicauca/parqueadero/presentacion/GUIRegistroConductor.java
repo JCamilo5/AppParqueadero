@@ -7,46 +7,64 @@ package com.unicauca.parqueadero.presentacion;
 
 import com.unicauca.parqueadero.negocio.GestorConductor;
 import com.unicauca.parqueadero.utilidades.Utilidades;
-import java.util.Observer;
 import java.util.Properties;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import recursos.DateLabelFormatter;
+
 /**
  *
  * @author JuanCamilo
  */
-public class GUIRegistroConductor extends javax.swing.JFrame implements Observable{
+public class GUIRegistroConductor extends javax.swing.JFrame {
 
     private JDatePickerImpl dtpFechaNaci;
-    private  JDatePickerImpl datePicker;
+    private JDatePickerImpl datePicker;
     private GUIRegistroVehiculo vistaRVehiculo;
+    private GestorConductor modelo;
+
     /**
      * Creates new form GUIRegistroConductor
      */
     public GUIRegistroConductor() {
         initComponents();
-        
+
     }
-    public void iniciar(){
+
+    public void setModelo(GestorConductor g) {
+        this.modelo = g;
+    }
+
+    public void setCedula(String ced) {
+        this.txtCedula.setText(ced);
+        this.txtCedula.setEditable(false);
+    }
+
+    public void iniciar() {
+
+        this.setSize(500, 400);
+        this.setTitle("REGISTRO DE CONDUCTOR");
+        this.setVisible(true);
+    }
+
+    public void setRegistroVe(GUIRegistroVehiculo vista) {
+        this.vistaRVehiculo = vista;
+    }
+
+    public void cargarDTP() {
         UtilDateModel model = new UtilDateModel();
+        model.setDate(1999, 0, 1);
         Properties p = new Properties();
         p.put("text.year", "Year");
         p.put("text.month", "Month");
-        p.put("text.today", "Today");    
+        p.put("text.today", "Today");
         JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
-        datePicker = new JDatePickerImpl(datePanel,new DateLabelFormatter());
+        datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
         this.dtpFechaNaci = datePicker;
         pnlFecha.add(dtpFechaNaci);
-        this.setSize(500, 400);
-        this.setVisible(true);
     }
-    public void setRegistroVe(GUIRegistroVehiculo vista){
-        this.vistaRVehiculo = vista;
-    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -57,13 +75,10 @@ public class GUIRegistroConductor extends javax.swing.JFrame implements Observab
     private void initComponents() {
 
         pnlBotones = new javax.swing.JPanel();
-        btnGuardar = new javax.swing.JButton();
+        btnRegistrarCond = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         lblTitulo = new javax.swing.JLabel();
         pnlResistro = new javax.swing.JPanel();
-        pnlVehiculo = new javax.swing.JPanel();
-        btnRegistrarCond = new javax.swing.JButton();
-        btnRegistrarVehiculo = new javax.swing.JButton();
         pnlDatos = new javax.swing.JPanel();
         lblCedula = new javax.swing.JLabel();
         txtCedula = new javax.swing.JTextField();
@@ -84,15 +99,20 @@ public class GUIRegistroConductor extends javax.swing.JFrame implements Observab
 
         pnlBotones.setBackground(new java.awt.Color(0, 102, 102));
 
-        btnGuardar.setText("Guardar");
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+        btnRegistrarCond.setText("Guardar Conductor");
+        btnRegistrarCond.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
+                btnRegistrarCondActionPerformed(evt);
             }
         });
-        pnlBotones.add(btnGuardar);
+        pnlBotones.add(btnRegistrarCond);
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
         pnlBotones.add(btnCancelar);
 
         getContentPane().add(pnlBotones, java.awt.BorderLayout.SOUTH);
@@ -105,27 +125,6 @@ public class GUIRegistroConductor extends javax.swing.JFrame implements Observab
         getContentPane().add(lblTitulo, java.awt.BorderLayout.PAGE_START);
 
         pnlResistro.setLayout(new java.awt.BorderLayout());
-
-        pnlVehiculo.setBackground(new java.awt.Color(0, 102, 102));
-        pnlVehiculo.setLayout(new java.awt.GridBagLayout());
-
-        btnRegistrarCond.setText("Guardar Conductor");
-        btnRegistrarCond.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistrarCondActionPerformed(evt);
-            }
-        });
-        pnlVehiculo.add(btnRegistrarCond, new java.awt.GridBagConstraints());
-
-        btnRegistrarVehiculo.setText("Registrar Vehiculo");
-        btnRegistrarVehiculo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRegistrarVehiculoActionPerformed(evt);
-            }
-        });
-        pnlVehiculo.add(btnRegistrarVehiculo, new java.awt.GridBagConstraints());
-
-        pnlResistro.add(pnlVehiculo, java.awt.BorderLayout.SOUTH);
 
         pnlDatos.setBackground(new java.awt.Color(0, 102, 102));
         pnlDatos.setForeground(new java.awt.Color(0, 102, 102));
@@ -165,11 +164,21 @@ public class GUIRegistroConductor extends javax.swing.JFrame implements Observab
         rbMasculino.setForeground(new java.awt.Color(255, 255, 255));
         rbMasculino.setSelected(true);
         rbMasculino.setText("Masculino");
+        rbMasculino.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rbMasculinoMouseClicked(evt);
+            }
+        });
         pblGeneros.add(rbMasculino);
 
         rbFemenino.setBackground(new java.awt.Color(0, 102, 102));
         rbFemenino.setForeground(new java.awt.Color(255, 255, 255));
         rbFemenino.setText("Femenino");
+        rbFemenino.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rbFemeninoMouseClicked(evt);
+            }
+        });
         pblGeneros.add(rbFemenino);
 
         pnlDatos.add(pblGeneros);
@@ -200,62 +209,61 @@ public class GUIRegistroConductor extends javax.swing.JFrame implements Observab
 
     private void btnRegistrarCondActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarCondActionPerformed
         //TODO validaciones de campos
-        GestorConductor gestor = new GestorConductor();
-        String cedula,nombres,apellidos,fechaNaci,genero;
+        
+        String cedula, nombres, apellidos, fechaNaci, genero;
         cedula = txtCedula.getText();
         nombres = txtNombres.getText();
-        apellidos =txtApellidos.getText();
-        if(rbFemenino.isSelected()){
+        apellidos = txtApellidos.getText();
+        if (rbFemenino.isSelected()) {
             genero = "F";
-        }else{
+        } else {
             genero = "M";
         }
         fechaNaci = datePicker.getJFormattedTextField().getText();
         try {
-            gestor.agregarConductor(cedula, nombres, apellidos, genero, fechaNaci);
-            gestor.asociarRol(cedula, String.valueOf(cbxRol.getSelectedIndex()+1));
-            Utilidades.mensajeExito("Conductor registrado con exito ","Exito");
-            txtCedula.setEditable(false);
-            txtNombres.setEditable(false);
-            txtApellidos.setEditable(false);
-            cbxRol.setEditable(false);
-        } catch (Exception e) {
-            Utilidades.mensajeError("Un error inesperado ha ocurrido","Error");
-        }
-        System.out.println(this.cbxRol.getSelectedIndex());
-        
-        
-    }//GEN-LAST:event_btnRegistrarCondActionPerformed
-
-    private void btnRegistrarVehiculoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarVehiculoActionPerformed
-        vistaRVehiculo.iniciar();
-    }//GEN-LAST:event_btnRegistrarVehiculoActionPerformed
-
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        String cedula,placa;
-        placa= Utilidades.placa;
-        cedula = txtCedula.getText();
-        GestorConductor g = new GestorConductor();
-        try {
-            g.asociarVehiCond(cedula, placa);
-            Utilidades.mensajeExito("Datos Guardados Correctamente", "Exito");
-            limpiarCajasTexto();
+            System.out.println(String.valueOf(cbxRol.getSelectedIndex() + 1));
+            modelo.agregarConductor(cedula, nombres, apellidos, genero, fechaNaci);
+            modelo.asociarRol(cedula, String.valueOf(cbxRol.getSelectedIndex() + 1));
+            Utilidades.mensajeExito("Conductor registrado con exito ", "Exito");
+            vistaRVehiculo.setCedula(txtCedula.getText());
+            vistaRVehiculo.iniciar();
+            limpiarCajas();
             this.dispose();
         } catch (Exception e) {
             Utilidades.mensajeError("Un error inesperado ha ocurrido", "Error");
-                    
         }
-    }//GEN-LAST:event_btnGuardarActionPerformed
+
+
+    }//GEN-LAST:event_btnRegistrarCondActionPerformed
+
+    private void limpiarCajas(){
+        txtApellidos.setText("");
+        txtCedula.setText("");
+        txtNombres.setText("");
+    }
     
-    private void limpiarCajasTexto(){
-        System.out.println("TODO limpiar cajas");
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        limpiarCajasTexto();
+        this.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void rbMasculinoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbMasculinoMouseClicked
+        this.rbFemenino.setSelected(false);
+    }//GEN-LAST:event_rbMasculinoMouseClicked
+
+    private void rbFemeninoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rbFemeninoMouseClicked
+        this.rbMasculino.setSelected(false);
+    }//GEN-LAST:event_rbFemeninoMouseClicked
+
+    private void limpiarCajasTexto() {
+        this.txtNombres.setText("");
+        this.txtCedula.setText("");
+        this.txtApellidos.setText("");
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnGuardar;
     private javax.swing.JButton btnRegistrarCond;
-    private javax.swing.JButton btnRegistrarVehiculo;
     private javax.swing.JComboBox<String> cbxRol;
     private javax.swing.JLabel lblApellidos;
     private javax.swing.JLabel lblCedula;
@@ -269,7 +277,6 @@ public class GUIRegistroConductor extends javax.swing.JFrame implements Observab
     private javax.swing.JPanel pnlDatos;
     private javax.swing.JPanel pnlFecha;
     private javax.swing.JPanel pnlResistro;
-    private javax.swing.JPanel pnlVehiculo;
     private javax.swing.JRadioButton rbFemenino;
     private javax.swing.JRadioButton rbMasculino;
     private javax.swing.JTextField txtApellidos;
@@ -277,13 +284,4 @@ public class GUIRegistroConductor extends javax.swing.JFrame implements Observab
     private javax.swing.JTextField txtNombres;
     // End of variables declaration//GEN-END:variables
 
-    @Override
-    public void addListener(InvalidationListener il) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void removeListener(InvalidationListener il) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

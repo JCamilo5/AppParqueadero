@@ -32,10 +32,18 @@
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="99" red="99" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Consultar informacion del conductor"/>
+                <Property name="text" type="java.lang.String" value="Ingresar Conductor"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnConsConductorActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnSalidaConductor">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Registrar Salida"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSalidaConductorActionPerformed"/>
               </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnVerMapa">
@@ -76,10 +84,13 @@
             <Property name="text" type="java.lang.String" value="Opciones de Administrador"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+            <MenuItem class="javax.swing.JMenuItem" name="sbMnuRegVigilante">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Agregar Vigilante"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sbMnuRegVigilanteActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
