@@ -7,6 +7,7 @@ package com.unicauca.parqueadero.presentacion;
 
 import com.unicauca.parqueadero.negocio.Conductor;
 import com.unicauca.parqueadero.negocio.GestorConductor;
+import com.unicauca.parqueadero.negocio.Multa;
 import com.unicauca.parqueadero.negocio.Vehiculo;
 import com.unicauca.parqueadero.utilidades.Utilidades;
 import java.awt.Color;
@@ -33,8 +34,10 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
     private GestorConductor modelo;
     private GUIRegistroConductor registroCon;
     private GUIRegistroVehiculo regisVehi;
+    private GUITablaMultas tabla_multas;
     private String c_cedula;
     private String v_placa;
+    private ArrayList<Multa> multas;
 
     public GUIBusquedaConductor() {
         initComponents();
@@ -42,7 +45,10 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
         this.setSize(1000, 400);
         this.setResizable(true);
         this.setClosable(true);
+        this.btnConsultarMultas.setVisible(false);
         this.txtDocumento.requestFocus();
+        this.tabla_multas = new GUITablaMultas();
+        this.multas = new ArrayList<>();
     }
     public void setRegVehiculo(GUIRegistroVehiculo vista){
         this.regisVehi = vista;
@@ -77,6 +83,9 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
         tblResultado = new javax.swing.JTable();
         pnlAddVehiculo = new javax.swing.JPanel();
         btnAddVehiculo = new javax.swing.JButton();
+        btnConsultarMultas = new javax.swing.JButton();
+        pnlInformacion = new javax.swing.JPanel();
+        lblNumEntradas = new javax.swing.JLabel();
         pnlBusqueda = new javax.swing.JPanel();
         lblTituloIngrese = new javax.swing.JLabel();
         pblCampo = new javax.swing.JPanel();
@@ -151,9 +160,10 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
         pblTabla.add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
         pnlAddVehiculo.setBackground(new java.awt.Color(0, 102, 102));
-        pnlAddVehiculo.setLayout(new java.awt.BorderLayout());
+        pnlAddVehiculo.setLayout(new javax.swing.BoxLayout(pnlAddVehiculo, javax.swing.BoxLayout.Y_AXIS));
 
-        btnAddVehiculo.setBackground(new java.awt.Color(0, 51, 51));
+        btnAddVehiculo.setBackground(new java.awt.Color(0, 102, 0));
+        btnAddVehiculo.setFont(new java.awt.Font("Century Gothic", 1, 11)); // NOI18N
         btnAddVehiculo.setForeground(new java.awt.Color(255, 255, 255));
         btnAddVehiculo.setText("Agregar Vehículo");
         btnAddVehiculo.setEnabled(false);
@@ -162,11 +172,30 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
                 btnAddVehiculoActionPerformed(evt);
             }
         });
-        pnlAddVehiculo.add(btnAddVehiculo, java.awt.BorderLayout.NORTH);
+        pnlAddVehiculo.add(btnAddVehiculo);
+
+        btnConsultarMultas.setBackground(new java.awt.Color(0, 102, 0));
+        btnConsultarMultas.setFont(new java.awt.Font("Century Gothic", 1, 12)); // NOI18N
+        btnConsultarMultas.setForeground(new java.awt.Color(255, 255, 255));
+        btnConsultarMultas.setText("Consultar Multas");
+        btnConsultarMultas.setEnabled(false);
+        btnConsultarMultas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultarMultasActionPerformed(evt);
+            }
+        });
+        pnlAddVehiculo.add(btnConsultarMultas);
 
         pblTabla.add(pnlAddVehiculo, java.awt.BorderLayout.LINE_END);
 
         pnlResultados.add(pblTabla, java.awt.BorderLayout.CENTER);
+
+        pnlInformacion.setLayout(new javax.swing.BoxLayout(pnlInformacion, javax.swing.BoxLayout.Y_AXIS));
+
+        lblNumEntradas.setText("#Entradas");
+        pnlInformacion.add(lblNumEntradas);
+
+        pnlResultados.add(pnlInformacion, java.awt.BorderLayout.LINE_START);
 
         getContentPane().add(pnlResultados, java.awt.BorderLayout.CENTER);
 
@@ -233,9 +262,10 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
                 Utilidades.mensajeAdvertencia("No se encuentró conductor con el numero ingresado,debera agregarse manualmente", "No se encontro el conductor");
                 registroCon.setCedula(cedula);
                 registroCon.iniciar();
+                
             } else {
                 lblInfoConductor.setText("INFORMACION: Nombre: " + aux.getNombres() + " Apellidos: " + aux.getApellidos() + " Rol: " + aux.getRol());
-
+                
                 if (!modelo.obtenerVehiculosCon(cedula).isEmpty()) {
                     llenarTabla(modelo.obtenerVehiculosCon(cedula));
                     this.btnAddVehiculo.setEnabled(true);
@@ -254,23 +284,23 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
     }//GEN-LAST:event_btnConsultarActionPerformed
 
     private void btnAsignarPuestoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAsignarPuestoActionPerformed
+
         pController.setCedula(c_cedula);
         pController.setPlaca(v_placa);
         pController.iniciar();
-        pController.lanzarHilo();
-        pController.detenrHilo();
-        this.txtDocumento.setText("");
-        inicializarTabla();
-        lblInfoConductor.setText("INFORMACION: ");
-        this.btnAsignarPuesto.setEnabled(false);
-        this.txtDocumento.requestFocus();
-        this.btnAddVehiculo.setEnabled(false);
 
     }//GEN-LAST:event_btnAsignarPuestoActionPerformed
 
     private void tblResultadoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblResultadoMouseClicked
+        
         int seleccionar = tblResultado.rowAtPoint(evt.getPoint());
         String placa = String.valueOf(tblResultado.getValueAt(seleccionar, 0));
+        multas = modelo.obtenerMultas(placa);
+        if(!multas.isEmpty()){
+            this.btnConsultarMultas.setVisible(true);
+            this.btnConsultarMultas.setEnabled(true);
+        }
+        //TODO mandar al modelo que consulta si tiene multas y ponga visible el boton
         v_placa = placa;
         this.btnAsignarPuesto.setEnabled(true);
     }//GEN-LAST:event_tblResultadoMouseClicked
@@ -286,19 +316,27 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
         }
     }//GEN-LAST:event_btnAddVehiculoActionPerformed
 
+    private void btnConsultarMultasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarMultasActionPerformed
+        this.tabla_multas.iniciar(v_placa,multas);
+        
+    }//GEN-LAST:event_btnConsultarMultasActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddVehiculo;
     private javax.swing.JButton btnAsignarPuesto;
     private javax.swing.JButton btnConsultar;
+    private javax.swing.JButton btnConsultarMultas;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblInfoConductor;
+    private javax.swing.JLabel lblNumEntradas;
     private javax.swing.JLabel lblTituloIngrese;
     private javax.swing.JPanel pblCampo;
     private javax.swing.JPanel pblTabla;
     private javax.swing.JPanel pnlAddVehiculo;
     private javax.swing.JPanel pnlBotones;
     private javax.swing.JPanel pnlBusqueda;
+    private javax.swing.JPanel pnlInformacion;
     private javax.swing.JPanel pnlResultados;
     private javax.swing.JPanel pnlTipoDocumento;
     private javax.swing.JTable tblResultado;

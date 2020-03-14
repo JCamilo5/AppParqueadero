@@ -141,6 +141,21 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
     }
 
     @Override
+    public String consultarMultas(String placa) {
+        String respuesta = null;
+        String accion = "Consultar Multas";
+        try {
+            conectar(IP_SERVIDOR, PUERTO);
+            respuesta = leerFlujoEntradaSalida(accion + "," + placa);
+            cerrarFlujos();
+            desconectar();
+        } catch (IOException ex) {
+            Logger.getLogger(ServicioServidorUnicauca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return respuesta;
+    }
+
+    @Override
     public String consultarRoles(String cedula) {
         String respuesta = null;
         String accion = "Consultar Roles";
@@ -167,6 +182,21 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         try {
             conectar(IP_SERVIDOR, PUERTO);
             respuesta = leerFlujoEntradaSalida(accion + "," + cedula + "," + nombres + "," + apellidos + "," + genero + "," + fechaNaci);
+            cerrarFlujos();
+            desconectar();
+        } catch (IOException ex) {
+            Logger.getLogger(ServicioServidorUnicauca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return respuesta;
+    }
+
+    @Override
+    public String agregarMulta(String placa, String descripcion, String foto) {
+        String respuesta = null;
+        String accion = "Agregar Multa";
+        try {
+            conectar(IP_SERVIDOR, PUERTO);
+            respuesta = leerFlujoEntradaSalida(accion + "," + placa + "," + descripcion + "," + foto);
             cerrarFlujos();
             desconectar();
         } catch (IOException ex) {
@@ -206,12 +236,12 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
     }
 
     @Override
-    public String ingresarVehiculo(String cedula,String placa, String bahia) {
+    public String ingresarVehiculo(String cedula, String placa, String bahia) {
         String respuesta = null;
         String accion = "Ingresar Vehiculo";
         try {
             conectar(IP_SERVIDOR, PUERTO);
-            respuesta = leerFlujoEntradaSalida(accion + "," +cedula+","+ placa + "," + bahia);
+            respuesta = leerFlujoEntradaSalida(accion + "," + cedula + "," + placa + "," + bahia);
             cerrarFlujos();
             desconectar();
         } catch (IOException ex) {
@@ -241,7 +271,7 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         String accion = "Asociar Rol";
         try {
             conectar(IP_SERVIDOR, PUERTO);
-            respuesta = leerFlujoEntradaSalida(accion+","+cedula+","+rol);
+            respuesta = leerFlujoEntradaSalida(accion + "," + cedula + "," + rol);
             cerrarFlujos();
             desconectar();
         } catch (IOException ex) {
@@ -256,7 +286,7 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         String accion = "Agregar Vigilante";
         try {
             conectar(IP_SERVIDOR, PUERTO);
-            respuesta = leerFlujoEntradaSalida(accion+","+ced+","+emp+","+usua+","+noms+","+apells+","+genero+","+fechaNaci+","+contra+","+puesto);
+            respuesta = leerFlujoEntradaSalida(accion + "," + ced + "," + emp + "," + usua + "," + noms + "," + apells + "," + genero + "," + fechaNaci + "," + contra + "," + puesto);
             cerrarFlujos();
             desconectar();
         } catch (IOException ex) {
@@ -271,7 +301,7 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         String accion = "Registrar Salida";
         try {
             conectar(IP_SERVIDOR, PUERTO);
-            respuesta = leerFlujoEntradaSalida(accion+","+bahia);
+            respuesta = leerFlujoEntradaSalida(accion + "," + bahia);
             cerrarFlujos();
             desconectar();
         } catch (IOException ex) {
@@ -280,6 +310,19 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         return respuesta;
     }
 
-   
+    @Override
+    public String horasConegestion() {
+        String respuesta = null;
+        String accion = "Horas Congestion";
+        try {
+            conectar(IP_SERVIDOR, PUERTO);
+            respuesta = leerFlujoEntradaSalida(accion);
+            cerrarFlujos();
+            desconectar();
+        } catch (IOException ex) {
+            Logger.getLogger(ServicioServidorUnicauca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return respuesta;
+    }
 
 }

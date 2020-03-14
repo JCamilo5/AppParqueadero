@@ -7,53 +7,76 @@ package com.unicauca.parqueadero.presentacion;
 
 import com.unicauca.parqueadero.negocio.EstrategiaParqueadero;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
+import javax.swing.WindowConstants;
 
 /**
  *
  * @author JuanCamilo
  */
-public class GUIParqueadero extends javax.swing.JFrame  implements Observer{
+public class GUIParqueadero extends javax.swing.JFrame {
 
     private ArrayList<JToggleButton> tmp;
     private EstrategiaParqueadero estrategia;
-    private GUIParqueaderoController miController;
-    
+    private GUIParqueadero vista;
     /**
      * Creates new form GUIParqueaderoSur
      */
     public GUIParqueadero() {
+        vista = this;
         initComponents();
+        Image icon = Toolkit.getDefaultToolkit().getImage("./src/recursos/mapa.png");
+        this.setIconImage(icon);
         guardarBotones();
+        //this.hilo.start();
+        
     }
-
+    public void cerrar(){
+        this.dispose();
+    }
     public void habilitar(int i) {
-
-        tmp.get(i).setBackground(new Color(240, 240, 240));
         tmp.get(i).setSelected(false);
         tmp.get(i).setEnabled(true);
+    }
+    
+    public void deshabilitar(int i) {
+        
+        tmp.get(i).setSelected(true);
+        tmp.get(i).setEnabled(false);
+    }
 
+    public void cambiarColor(int indice) {
+        //tmp.get(indice).setBackground(Color.green);
+        tmp.get(indice).setSelected(true);
+        tmp.get(indice).setEnabled(false);
     }
-    public void setController(GUIParqueaderoController controler){
-        this.miController = controler;
-    }
-    public void setEstrategia(EstrategiaParqueadero est){
+
+    public void setEstrategia(EstrategiaParqueadero est) {
         this.estrategia = est;
     }
+
     public void habilitarSalida(int i) {
         tmp.get(i).setEnabled(true);
     }
-    public void cambiarColorSalida(int i){
+
+    public void cambiarColorSalida(int i) {
         tmp.get(i).setBackground(new Color(240, 240, 240));
         tmp.get(i).setSelected(false);
         tmp.get(i).setEnabled(false);
     }
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -389,19 +412,15 @@ public class GUIParqueadero extends javax.swing.JFrame  implements Observer{
 
         getContentPane().add(pnlTitulo, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>//GEN-END:initComponents
-    public void cambiarColor(int indice) {
-        tmp.get(indice).setBackground(Color.green);
-        tmp.get(indice).setSelected(false);
-        tmp.get(indice).setEnabled(false);
-    }
-    
-    public void pintarTodos(){
+
+    public void pintarTodos() {
         for (int i = 0; i < tmp.size(); i++) {
-            tmp.get(i).setBackground(new Color(240, 240, 240));
             tmp.get(i).setSelected(false);
+            tmp.get(i).setEnabled(true);
         }
     }
-    public ArrayList<JToggleButton> getBotones(){
+
+    public ArrayList<JToggleButton> getBotones() {
         return tmp;
     }
 
@@ -447,7 +466,7 @@ public class GUIParqueadero extends javax.swing.JFrame  implements Observer{
         tmp.add(btn38);
         tmp.add(btn39);
         tmp.add(btn40);
-        
+
     }
 
     public JPanel getFiet() {
@@ -475,6 +494,13 @@ public class GUIParqueadero extends javax.swing.JFrame  implements Observer{
         return aux;
     }
 
+    public void deshabilitarVista() {
+        for (int i = 0; i < this.getZonas().size(); i++) {
+            for (Component component : this.getZonas().get(i).getComponents()) {
+                component.setEnabled(false);
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btlnLibre;
@@ -535,10 +561,27 @@ public class GUIParqueadero extends javax.swing.JFrame  implements Observer{
     private javax.swing.JPanel pnlTitulo;
     private javax.swing.JPanel pnlZonaMotos;
     // End of variables declaration//GEN-END:variables
-
-    @Override
-    public void update(Observable o, Object arg) {
-        estrategia.cargarPuesto(miController.getGestor(), this, miController);
-    }
-
+      Thread hilo = new Thread(){
+        @Override
+        public void run(){
+            int segundos = 0;
+            try {
+                while(true){
+                    Thread.sleep(1000);
+                    segundos++;
+                    if(segundos >= 3){
+                        System.out.println("Cargar mapa");
+                        //estrategia.cargarPuesto(vista);
+                        segundos = 0;
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Ocurrio una exepcion");
+            }
+            System.out.println("Afuera del hilo");
+      
+            
+        }
+    };
+  
 }

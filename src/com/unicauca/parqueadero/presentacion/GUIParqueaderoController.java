@@ -35,26 +35,22 @@ public class GUIParqueaderoController implements ActionListener {
         this.modelo = modelo;
         this.vista = vista;
         this.factory = factory;
-        
+        asignarBotones();
     }
     
     public void iniciar() {
-        asignarBotones();
+        
         vista.setTitle("GESTION DE PUESTOS");
-        vista.setSize(572, 500);
-        vista.setVisible(true);
+        vista.setSize(572, 500);       
         estrategia = factory.getEstrategia(Utilidades.estrategia);
-        vista.setController(this);
         vista.setEstrategia(estrategia);
-        estrategia.cargarPuesto(modelo, vista, this);
-       
+        estrategia.cargarPuesto(vista);
+        System.out.println("Pongo visible");
+        vista.setVisible(true);
+        //hilo.start();
+        
     }
-    public void lanzarHilo(){
-        modelo.schedule(3);
-    }
-    public void detenrHilo(){
-        modelo.stop();
-    }
+
     
     public void setPlaca(String placa) {
         this.placa = placa;
@@ -74,10 +70,10 @@ public class GUIParqueaderoController implements ActionListener {
     
     @Override
     public void actionPerformed(ActionEvent e) {
-    
+        
         JToggleButton aux = (JToggleButton) e.getSource();
         String puesto = aux.getText();
-        estrategia.procesar(puesto, modelo, vista, this);
+        estrategia.procesar(puesto,vista,this);
         /*
         int opc = Utilidades.mensajeConfirmacion("Seguro que desea asignar el puesto: " + tmp + ".", "MENSAJE DE CONFIRMACION");
         if (opc == 0) {
@@ -105,45 +101,30 @@ public class GUIParqueaderoController implements ActionListener {
     }
     
     public void mostrarMapa() {
-        GUIParqueadero p = new GUIParqueadero();
-        ArrayList<Bahia> aux = modelo.obtenerOcupados();
-        for (int i = 0; i < aux.size(); i++) {
-            for (int j = 0; j < p.getBotones().size(); j++) {
-                if (p.getBotones().get(j).getText().equals(aux.get(i).getIdentificador())) {
-                    p.cambiarColor(j);
-                }
-            }
-            
-        }
-        p.setTitle("Mapa Parqueadero");
-        p.setSize(572, 500);
-        esta_habilitada(p);
-        p.setVisible(true);
+        GUIParqueadero v = new GUIParqueadero();
+        EstrategiaParqueadero esAux = factory.getEstrategia(Utilidades.estrategia);
+        esAux.cargarPuesto(v);
+        
+        v.setTitle("Mapa Parqueadero");
+        v.setSize(572, 500);
+        v.deshabilitarVista();
+        v.setVisible(true);
     }
     
-    public void esta_habilitada(GUIParqueadero p) {
-        for (int i = 0; i < p.getZonas().size(); i++) {
-            for (Component component : p.getZonas().get(i).getComponents()) {
-                component.setEnabled(false);
-            }            
-        }
-        
-    }
+
     public javax.swing.JFrame getVista(){
         asignarBotones();
         vista.setTitle("GESTION DE PUESTOS");
         vista.setSize(572, 500);
         vista.setLocationRelativeTo(null);
         estrategia = factory.getEstrategia(Utilidades.estrategia);
-        estrategia.cargarPuesto(modelo, vista, this);
+        estrategia.cargarPuesto(vista);
         
         return this.vista;
     }
     public Parqueadero getGestor(){
         return this.modelo;
     }
-    
-
   
     
 }

@@ -14,6 +14,7 @@ import com.unicauca.parqueadero.presentacion.GUIParqueaderoController;
  * @author JuanCamilo
  */
 public interface EstrategiaParqueadero {
-    public void procesar(String puesto,Parqueadero gestor,GUIParqueadero vista,GUIParqueaderoController c);
-    public void cargarPuesto(Parqueadero gestor,GUIParqueadero vista,GUIParqueaderoController c);
+    public void cargarInicio(GUIParqueadero vista);
+    public void procesar(String puesto,GUIParqueadero vista,GUIParqueaderoController c);
+    public void cargarPuesto(GUIParqueadero vista);
 }

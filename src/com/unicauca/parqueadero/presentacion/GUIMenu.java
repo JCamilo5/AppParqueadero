@@ -5,22 +5,27 @@
  */
 package com.unicauca.parqueadero.presentacion;
 
+import com.unicauca.parqueadero.negocio.InformeCongestion;
 import com.unicauca.parqueadero.utilidades.Utilidades;
 import java.awt.Color;
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.lang.reflect.InvocationTargetException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author JuanCamilo
  */
 public class GUIMenu extends javax.swing.JFrame {
+
     private GUIBusquedaConductor busqueda;
     private GUIParqueaderoController parqueController;
+    private GUIMultas multa;
     private GUIRegistroVigilante vistaRegVig;
     private String privilegio;
     private String ubicacion;
-    
 
     /**
      * Creates new form test
@@ -28,21 +33,31 @@ public class GUIMenu extends javax.swing.JFrame {
     public GUIMenu() {
 
         initComponents();
-
+        configMulta();
     }
-    public void setUbicacion(String ubi){
+
+    private void configMulta() {
+        multa = new GUIMultas();
+        multa.setSize(700, 300);
+        multa.setLocationRelativeTo(null);
+    }
+
+    public void setUbicacion(String ubi) {
         this.ubicacion = ubi;
     }
- 
-    public void setVistaRegVig(GUIRegistroVigilante vista){
+
+    public void setVistaRegVig(GUIRegistroVigilante vista) {
         this.vistaRegVig = vista;
     }
-    public void setVistaMapa(GUIParqueaderoController pc){
+
+    public void setVistaMapa(GUIParqueaderoController pc) {
         this.parqueController = pc;
     }
-    public void setBusqueda(GUIBusquedaConductor vista){
+
+    public void setBusqueda(GUIBusquedaConductor vista) {
         this.busqueda = vista;
     }
+
     public void setPrivilegio(String privilegio) {
         this.privilegio = privilegio;
     }
@@ -56,29 +71,29 @@ public class GUIMenu extends javax.swing.JFrame {
             this.sbMnuAyuda.setVisible(true);
             this.sbMnuOpcAdmin.setVisible(true);
             this.sbMnuOpciones.setVisible(true);
-            if(ubicacion.equals("Entrada")){
+            if (ubicacion.equals("Entrada")) {
                 Utilidades.estrategia = "Entrada";
 
             }
-            if(ubicacion.equals("Salida")){
-                Utilidades.estrategia = "Salida";              
+            if (ubicacion.equals("Salida")) {
+                Utilidades.estrategia = "Salida";
             }
-            
+
         }
         if (privilegio.equals("vigilante")) {
             this.sbMnuAyuda.setVisible(true);
             this.sbMnuOpcAdmin.setVisible(false);
             this.sbMnuOpciones.setVisible(true);
             System.out.println("Antes de preguntar ubicacion");
-            if(ubicacion.equals("Entrada")){
+            if (ubicacion.equals("Entrada")) {
                 Utilidades.estrategia = "Entrada";
                 this.btnSalidaConductor.setVisible(false);
 
             }
-            if(ubicacion.equals("Salida")){
+            if (ubicacion.equals("Salida")) {
                 Utilidades.estrategia = "Salida";
                 this.btnConsConductor.setVisible(false);
-                
+
             }
         }
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -119,6 +134,8 @@ public class GUIMenu extends javax.swing.JFrame {
         sbMnuOpciones = new javax.swing.JMenu();
         btnConsConductor = new javax.swing.JMenuItem();
         btnSalidaConductor = new javax.swing.JMenuItem();
+        btnMulta = new javax.swing.JMenuItem();
+        btnHorasConges = new javax.swing.JMenuItem();
         btnVerMapa = new javax.swing.JMenuItem();
         btnSalir = new javax.swing.JMenuItem();
         sbMnuAyuda = new javax.swing.JMenu();
@@ -141,9 +158,11 @@ public class GUIMenu extends javax.swing.JFrame {
         mbParqueadero.setMaximumSize(new java.awt.Dimension(324, 32769));
         mbParqueadero.setPreferredSize(new java.awt.Dimension(345, 21));
 
+        sbMnuOpciones.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/menu.png"))); // NOI18N
         sbMnuOpciones.setText("Opciones");
 
         btnConsConductor.setBackground(new java.awt.Color(153, 153, 255));
+        btnConsConductor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/choche.png"))); // NOI18N
         btnConsConductor.setText("Ingresar Conductor");
         btnConsConductor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,6 +171,7 @@ public class GUIMenu extends javax.swing.JFrame {
         });
         sbMnuOpciones.add(btnConsConductor);
 
+        btnSalidaConductor.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/salida.png"))); // NOI18N
         btnSalidaConductor.setText("Registrar Salida");
         btnSalidaConductor.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,6 +180,25 @@ public class GUIMenu extends javax.swing.JFrame {
         });
         sbMnuOpciones.add(btnSalidaConductor);
 
+        btnMulta.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/papel.png"))); // NOI18N
+        btnMulta.setText("RegistrarMulta");
+        btnMulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMultaActionPerformed(evt);
+            }
+        });
+        sbMnuOpciones.add(btnMulta);
+
+        btnHorasConges.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/resultado.png"))); // NOI18N
+        btnHorasConges.setText("Horas de Congestion");
+        btnHorasConges.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnHorasCongesActionPerformed(evt);
+            }
+        });
+        sbMnuOpciones.add(btnHorasConges);
+
+        btnVerMapa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/mapa.png"))); // NOI18N
         btnVerMapa.setText("Ver Mapa");
         btnVerMapa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -168,6 +207,7 @@ public class GUIMenu extends javax.swing.JFrame {
         });
         sbMnuOpciones.add(btnVerMapa);
 
+        btnSalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/salida (1).png"))); // NOI18N
         btnSalir.setText("Salir");
         btnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -178,6 +218,7 @@ public class GUIMenu extends javax.swing.JFrame {
 
         mbParqueadero.add(sbMnuOpciones);
 
+        sbMnuAyuda.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/informacion.png"))); // NOI18N
         sbMnuAyuda.setText("Ayuda");
 
         menAcercade.setText("Acerca de");
@@ -190,8 +231,10 @@ public class GUIMenu extends javax.swing.JFrame {
 
         mbParqueadero.add(sbMnuAyuda);
 
+        sbMnuOpcAdmin.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/soporte-tecnico.png"))); // NOI18N
         sbMnuOpcAdmin.setText("Opciones de Administrador");
 
+        sbMnuRegVigilante.setIcon(new javax.swing.ImageIcon(getClass().getResource("/recursos/guardia.png"))); // NOI18N
         sbMnuRegVigilante.setText("Agregar Vigilante");
         sbMnuRegVigilante.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -259,8 +302,23 @@ public class GUIMenu extends javax.swing.JFrame {
 
     private void btnSalidaConductorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalidaConductorActionPerformed
         parqueController.iniciar();
-        parqueController.lanzarHilo();
     }//GEN-LAST:event_btnSalidaConductorActionPerformed
+
+    private void btnMultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMultaActionPerformed
+
+        this.multa.setVisible(true);
+    }//GEN-LAST:event_btnMultaActionPerformed
+
+    private void btnHorasCongesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHorasCongesActionPerformed
+        
+        try {
+            InformeCongestion.iniciarInforme();
+        } catch (InterruptedException ex) {
+            Utilidades.mensajeError("Un error inesperado ha ocurrido", "ERROR");
+        } catch (InvocationTargetException ex) {
+            Utilidades.mensajeError("Un error inesperado ha ocurrido", "ERROR");
+        }
+    }//GEN-LAST:event_btnHorasCongesActionPerformed
 
     /**
      * @param args the command line arguments
@@ -268,6 +326,8 @@ public class GUIMenu extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuItem btnConsConductor;
+    private javax.swing.JMenuItem btnHorasConges;
+    private javax.swing.JMenuItem btnMulta;
     private javax.swing.JMenuItem btnSalidaConductor;
     private javax.swing.JMenuItem btnSalir;
     private javax.swing.JMenuItem btnVerMapa;

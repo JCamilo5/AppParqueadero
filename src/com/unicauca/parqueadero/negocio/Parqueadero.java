@@ -12,42 +12,27 @@ import com.unicauca.parqueadero.acceso.IServiciosParqueadero;
 import java.util.Observable;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author JuanCamilo
  */
-public class Parqueadero extends Observable {
+public class Parqueadero {
 
-    Timer timer;
-    int seconds;
+    
 
     private IServiciosParqueadero servicioParqueadero;
     private String respuesta;
 
     public Parqueadero() {
-        timer = new Timer();
         servicioParqueadero = new ServicioServidorUnicauca();
         respuesta = "";
     }
 
-    class NotifyTask extends TimerTask {
 
-        @Override
-        public void run() {
-            setChanged();
-            notifyObservers();
-        }
-    }
 
-    public void schedule(long seconds) {
-        timer.scheduleAtFixedRate(new NotifyTask(), 0, seconds * 2000); //delay in milliseconds
-
-    }
-
-    public void stop() {
-        timer.cancel();
-    }
 
     /**
      * Meotodo que manda a registrar el ingreso de un vehiculo a una bahia
@@ -84,6 +69,14 @@ public class Parqueadero extends Observable {
         return bahias;
     }
 
+    public ArrayList<IntervaloCongestion> obtnerHCongestion(){
+        String arryJson = servicioParqueadero.horasConegestion();
+        ArrayList<IntervaloCongestion> horas = new ArrayList<>();
+        if(!arryJson.equals("Vacio")){
+            horas = deserealizarHoras(arryJson);
+        }
+        return horas;
+    }
     public boolean registrarSalida(String bahia) {
         boolean exito = true;
         if (servicioParqueadero.registrarSalida(bahia).equals("Error")) {
@@ -101,5 +94,15 @@ public class Parqueadero extends Observable {
         }
         return lista_bahias;
     }
+    private ArrayList<IntervaloCongestion> deserealizarHoras(String arrayJsonSerializado){
+        IntervaloCongestion[] horas = new Gson().fromJson(arrayJsonSerializado, IntervaloCongestion[].class);
+        ArrayList<IntervaloCongestion> lista_horas = new ArrayList<>();
+        
+        for (int i = 0; i < horas.length; i++) {
+            lista_horas.add(horas[i]);
+        }
+        return lista_horas;
+    }
+   
 
 }

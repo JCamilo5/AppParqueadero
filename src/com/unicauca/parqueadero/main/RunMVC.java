@@ -50,7 +50,7 @@ public class RunMVC {
         GUIParqueadero vistaP = new GUIParqueadero();
         Parqueadero modeloP = new Parqueadero();
         
-        modeloP.addObserver(vistaP);
+
         GUIParqueaderoController pController = new GUIParqueaderoController(vistaP,modeloP,factory);
  
         

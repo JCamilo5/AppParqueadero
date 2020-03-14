@@ -13,5 +13,6 @@ public interface IServiciosParqueadero {
   
     public String ingresarVehiculo(String cedula,String placa,String bahia);
     public String registrarSalida(String bahia);
+    public String horasConegestion();
     public String obtenerOcupados();
 }

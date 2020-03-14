@@ -24,6 +24,9 @@
       <SubComponents>
         <Menu class="javax.swing.JMenu" name="sbMnuOpciones">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/recursos/menu.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Opciones"/>
           </Properties>
           <SubComponents>
@@ -31,6 +34,9 @@
               <Properties>
                 <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="99" red="99" type="rgb"/>
+                </Property>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/choche.png"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Ingresar Conductor"/>
               </Properties>
@@ -40,14 +46,42 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnSalidaConductor">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/salida.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Registrar Salida"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnSalidaConductorActionPerformed"/>
               </Events>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnMulta">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/papel.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="RegistrarMulta"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMultaActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="btnHorasConges">
+              <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/resultado.png"/>
+                </Property>
+                <Property name="text" type="java.lang.String" value="Horas de Congestion"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnHorasCongesActionPerformed"/>
+              </Events>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnVerMapa">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/mapa.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Ver Mapa"/>
               </Properties>
               <Events>
@@ -56,6 +90,9 @@
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="btnSalir">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/salida (1).png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Salir"/>
               </Properties>
               <Events>
@@ -66,6 +103,9 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="sbMnuAyuda">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/recursos/informacion.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Ayuda"/>
           </Properties>
           <SubComponents>
@@ -81,11 +121,17 @@
         </Menu>
         <Menu class="javax.swing.JMenu" name="sbMnuOpcAdmin">
           <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+              <Image iconType="3" name="/recursos/soporte-tecnico.png"/>
+            </Property>
             <Property name="text" type="java.lang.String" value="Opciones de Administrador"/>
           </Properties>
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="sbMnuRegVigilante">
               <Properties>
+                <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
+                  <Image iconType="3" name="/recursos/guardia.png"/>
+                </Property>
                 <Property name="text" type="java.lang.String" value="Agregar Vigilante"/>
               </Properties>
               <Events>

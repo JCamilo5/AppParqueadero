@@ -91,7 +91,6 @@ public class GestorConductor extends java.util.Observable {
      * @param cedula
      * @return
      */
-
     public boolean asociarRol(String cedula, String rol) {
         boolean exito = false;
         respuesta = servicioConductores.asociarRol(cedula, rol);
@@ -119,7 +118,20 @@ public class GestorConductor extends java.util.Observable {
         }
         return exito;
     }
-
+    public boolean agregarMulta(String placa,String descripcion,String foto){
+        boolean exito = false;
+        respuesta = servicioConductores.agregarMulta(placa, descripcion, foto);
+        if(!respuesta.equals("Error")){
+            exito = true;
+        }
+        return exito;
+    }
+    /**
+     * Metodo que asocia un vehiculo con un conductor
+     * @param cedula cedula del conductor
+     * @param placa placa del vehiculo
+     * @return true si el proceso exitoso false de lo contrario
+     */
     public boolean asociarVehiCond(String cedula, String placa) {
         boolean exito = false;
         respuesta = servicioConductores.asociarVehiCond(cedula, placa);
@@ -149,6 +161,12 @@ public class GestorConductor extends java.util.Observable {
         return miConductor;
     }
 
+    /**
+     * Metodo que retorna los vehiculoas asociados a una cedula
+     *
+     * @param cedula criterio de busqueda
+     * @return arreglo de vehiculos
+     */
     public ArrayList<Vehiculo> obtenerVehiculosCon(String cedula) {
         String arrayJson = servicioConductores.consultarVehiculoCon(cedula);
         ArrayList<Vehiculo> lista_vehiculos = new ArrayList<>();
@@ -163,7 +181,40 @@ public class GestorConductor extends java.util.Observable {
         }
         return lista_vehiculos;
     }
+    /**
+     * Metodo que retorna las multas asociadas a un vehiculo
+     * @param placa criterio de busqueda
+     * @return  multas asociadas
+     */
+    public ArrayList<Multa> obtenerMultas(String placa) {
+        String arrayJson = servicioConductores.consultarMultas(placa);
+        ArrayList<Multa> lista_multas = new ArrayList<>();
+        if (!arrayJson.equals("Vacio")) {
+            lista_multas = deserealizarMutas(arrayJson);
+        } else {
+            respuesta = arrayJson;
+        }
+        return lista_multas;
 
+    }
+    /**
+     * Metodo qeu deserealiza las multas en formato json
+     * @param arrayJsonSerializado multas en formato json
+     * @return multas 
+     */
+    private ArrayList<Multa> deserealizarMutas(String arrayJsonSerializado) {
+        Multa[] misMultas = new Gson().fromJson(arrayJsonSerializado, Multa[].class);
+        ArrayList<Multa> lista_multas = new ArrayList<>();
+        for (int i = 0; i < misMultas.length; i++) {
+            lista_multas.add(misMultas[i]);
+        }
+        return lista_multas;
+    }
+    /**
+     *Metodo que deserializa un vehiculo en formato json
+     * @param arrayJsonSerializado vehiculo serializado
+     * @return vehiculo
+     */
     private ArrayList<Vehiculo> deserializarVehiculos(String arrayJsonSerializado) {
         Vehiculo[] misVehiculos = new Gson().fromJson(arrayJsonSerializado, Vehiculo[].class);
         ArrayList<Vehiculo> lista_vehiculos = new ArrayList<>();
@@ -174,6 +225,12 @@ public class GestorConductor extends java.util.Observable {
         return lista_vehiculos;
     }
 
+    /**
+     * Metodo que deserealiza un conductor serializado en json
+     *
+     * @param json conductor serializado
+     * @return conductor
+     */
     private Conductor parseToConductor(String json) {
         Gson gson = new Gson();
         Properties propiedades = gson.fromJson(json, Properties.class);

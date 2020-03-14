@@ -16,49 +16,52 @@ import java.util.ArrayList;
  *
  * @author JuanCamilo
  */
-public class EstrategiaSalida implements EstrategiaParqueadero{
+public class EstrategiaSalida implements EstrategiaParqueadero {
+
+    Parqueadero gestor = new Parqueadero();
 
     @Override
-    public void procesar(String puesto, Parqueadero gestor, GUIParqueadero vista, GUIParqueaderoController c) {
+    public void procesar(String puesto, GUIParqueadero vista, GUIParqueaderoController c) {
         int op;
         int indice = Integer.parseInt(puesto);
-        op = Utilidades.mensajeConfirmacion("Esta seguro que desea liberar el puesto: "+puesto, "CONFIRMACION");
-        if(op == 0){
-            if(gestor.registrarSalida(puesto)){
-                vista.cambiarColorSalida(indice-1);
+        op = Utilidades.mensajeConfirmacion("Esta seguro que desea liberar el puesto: " + puesto, "CONFIRMACION");
+        if (op == 0) {
+            if (gestor.registrarSalida(puesto)) {
+                vista.deshabilitar(indice - 1);
                 Utilidades.mensajeExito("Liberacion Exitosa", "Proceso Exitoso");
-            }else{
+            } else {
                 Utilidades.mensajeError("Un error inesperado ha ocurrido", "Proceso Fallido");
             }
-            
-        }else{
+
+        } else {
             vista.habilitar(indice - 1);
         }
     }
 
     @Override
-    public void cargarPuesto(Parqueadero gestor, GUIParqueadero vista, GUIParqueaderoController c) {
-        c.esta_habilitada(vista);
-        
-         ArrayList<Bahia> aux = gestor.obtenerOcupados();
-        for (int i = 0; i < aux.size(); i++) {
-            for (int j = 0; j < vista.getBotones().size(); j++) {
-                if (vista.getBotones().get(j).getText().equals(aux.get(i).getIdentificador())) {
-                    vista.cambiarColor(j);
+    public void cargarPuesto(GUIParqueadero vista) {
+
+        ArrayList<Bahia> aux = gestor.obtenerOcupados();
+
+        for (int i = 0; i < vista.getBotones().size(); i++) {
+            for (int j = 0; j < aux.size(); j++) {
+                if (vista.getBotones().get(i).getText().equals(aux.get(j).getIdentificador())) {
+                    vista.habilitar(i);
+                    break;
+                } else {
+
                 }
-            }   
-        }
-        
-         for (int i = 0; i < aux.size(); i++) {
-            for (int j = 0; j < vista.getBotones().size(); j++) {
-                if (vista.getBotones().get(j).getText().equals(aux.get(i).getIdentificador())) {
-                    vista.habilitarSalida(j);
+                if (j == aux.size() - 1) {
+                    vista.deshabilitar(i);
                 }
-            }   
+
+            }
         }
-        
+    }
+
+    @Override
+    public void cargarInicio(GUIParqueadero vista) {
         
     }
 
-    
 }
