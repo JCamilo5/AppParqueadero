@@ -20,6 +20,7 @@ import java.util.ArrayList;
 public class EstrategiaEntrada implements EstrategiaParqueadero {
 
     Parqueadero gestor = new Parqueadero();
+    Hilo t1;
 
     @Override
     public void procesar(String puesto, GUIParqueadero vista, GUIParqueaderoController c) {
@@ -34,6 +35,8 @@ public class EstrategiaEntrada implements EstrategiaParqueadero {
                 Utilidades.mensajeError("Un error inesperado ha ocurrido", "Proceso Fallido");
                 vista.habilitar(indice - 1);
             }
+            this.terminarHilo();
+            System.out.println("Termino hilo");
             vista.dispose();
         } else {
             vista.habilitar(indice - 1);
@@ -45,7 +48,7 @@ public class EstrategiaEntrada implements EstrategiaParqueadero {
     public void cargarPuesto(GUIParqueadero vista) {
 
         ArrayList<Bahia> aux = gestor.obtenerOcupados();
-
+        System.out.println("for");
         for (int i = 0; i < vista.getBotones().size(); i++) {
             for (int j = 0; j < aux.size(); j++) {
                 if (vista.getBotones().get(i).getText().equals(aux.get(j).getIdentificador())) {
@@ -59,6 +62,15 @@ public class EstrategiaEntrada implements EstrategiaParqueadero {
                 }
 
             }
+        }
+        try {
+            if (t1.t.getName() != null) {
+                //no existe
+            }
+        } catch (Exception e) {
+            t1 = new Hilo();
+                t1.setEstrategia(this);
+                t1.setVista(vista);
         }
         /*for (int i = 0; i < aux.size(); i++) {
             for (int j = 0; j < vista.getBotones().size(); j++) {
@@ -74,5 +86,14 @@ public class EstrategiaEntrada implements EstrategiaParqueadero {
     public void cargarInicio(GUIParqueadero vista) {
 
     }
-
+    @Override
+    public void terminarHilo(){
+        try {
+                Thread.sleep(1);
+                t1.t.interrupt();
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                System.out.println("Caught:" + e);
+            }
+    }
 }

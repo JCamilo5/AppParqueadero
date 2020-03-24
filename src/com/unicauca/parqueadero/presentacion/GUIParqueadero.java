@@ -37,6 +37,15 @@ public class GUIParqueadero extends javax.swing.JFrame {
      */
     public GUIParqueadero() {
         vista = this;
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter(){
+            @Override
+            public void windowClosing(WindowEvent e){
+                System.out.println("Cerro hilo");
+                estrategia.terminarHilo();
+                vista.dispose();
+            }
+        });
         initComponents();
         Image icon = Toolkit.getDefaultToolkit().getImage("./src/recursos/mapa.png");
         this.setIconImage(icon);

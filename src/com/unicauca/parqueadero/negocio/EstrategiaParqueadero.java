@@ -17,4 +17,5 @@ public interface EstrategiaParqueadero {
     public void cargarInicio(GUIParqueadero vista);
     public void procesar(String puesto,GUIParqueadero vista,GUIParqueaderoController c);
     public void cargarPuesto(GUIParqueadero vista);
+    public void terminarHilo();
 }

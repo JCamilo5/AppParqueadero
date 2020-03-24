@@ -19,6 +19,7 @@ import java.util.ArrayList;
 public class EstrategiaSalida implements EstrategiaParqueadero {
 
     Parqueadero gestor = new Parqueadero();
+    Hilo t1;
 
     @Override
     public void procesar(String puesto, GUIParqueadero vista, GUIParqueaderoController c) {
@@ -32,7 +33,7 @@ public class EstrategiaSalida implements EstrategiaParqueadero {
             } else {
                 Utilidades.mensajeError("Un error inesperado ha ocurrido", "Proceso Fallido");
             }
-
+             
         } else {
             vista.habilitar(indice - 1);
         }
@@ -42,7 +43,6 @@ public class EstrategiaSalida implements EstrategiaParqueadero {
     public void cargarPuesto(GUIParqueadero vista) {
 
         ArrayList<Bahia> aux = gestor.obtenerOcupados();
-
         for (int i = 0; i < vista.getBotones().size(); i++) {
             for (int j = 0; j < aux.size(); j++) {
                 if (vista.getBotones().get(i).getText().equals(aux.get(j).getIdentificador())) {
@@ -54,14 +54,34 @@ public class EstrategiaSalida implements EstrategiaParqueadero {
                 if (j == aux.size() - 1) {
                     vista.deshabilitar(i);
                 }
-
             }
+        }
+        try {
+            if (t1.t.getName() != null) {
+                //no existe
+            }
+        } catch (Exception e) {
+            t1 = new Hilo();
+                t1.setEstrategia(this);
+                t1.setVista(vista);
         }
     }
 
     @Override
     public void cargarInicio(GUIParqueadero vista) {
         
+    }
+    @Override
+    public void terminarHilo(){
+        try {
+                Thread.sleep(1);
+                System.out.println("inter");
+                t1.t.interrupt();
+                t1.t.stop();
+                Thread.sleep(5);
+            } catch (InterruptedException e) {
+                System.out.println("Caught:" + e);
+            }
     }
 
 }

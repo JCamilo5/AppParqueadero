@@ -48,11 +48,10 @@ public class InformeCongestion extends JFrame{
         
     }
     public static void iniciarInforme() throws InterruptedException, InvocationTargetException{
-        SwingUtilities.invokeAndWait(()->{
         InformeCongestion informe = new InformeCongestion();
         informe.setSize(500, 500);
-        informe.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        informe.setTitle("ESTADISTICAS DE INGRESO");
         informe.setVisible(true);
-                });
+        
     }
 }

@@ -7,6 +7,7 @@ package com.unicauca.parqueadero.presentacion;
 
 import com.unicauca.parqueadero.negocio.Conductor;
 import com.unicauca.parqueadero.negocio.GestorConductor;
+import com.unicauca.parqueadero.negocio.Informe;
 import com.unicauca.parqueadero.negocio.Multa;
 import com.unicauca.parqueadero.negocio.Vehiculo;
 import com.unicauca.parqueadero.utilidades.Utilidades;
@@ -190,9 +191,11 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
 
         pnlResultados.add(pblTabla, java.awt.BorderLayout.CENTER);
 
+        pnlInformacion.setBackground(new java.awt.Color(0, 102, 102));
         pnlInformacion.setLayout(new javax.swing.BoxLayout(pnlInformacion, javax.swing.BoxLayout.Y_AXIS));
 
-        lblNumEntradas.setText("#Entradas");
+        lblNumEntradas.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        lblNumEntradas.setForeground(new java.awt.Color(255, 255, 255));
         pnlInformacion.add(lblNumEntradas);
 
         pnlResultados.add(pnlInformacion, java.awt.BorderLayout.LINE_START);
@@ -265,6 +268,13 @@ public class GUIBusquedaConductor extends javax.swing.JInternalFrame implements 
                 
             } else {
                 lblInfoConductor.setText("INFORMACION: Nombre: " + aux.getNombres() + " Apellidos: " + aux.getApellidos() + " Rol: " + aux.getRol());
+                String informe = "<html>El conductor registrado <p>con cedula: "+cedula+"<p> ha ingresado <p>en la ultima semana:<p>";
+                ArrayList<Informe> arreglo = modelo.obtenerInforme(cedula);
+                for (int i = 0; i < arreglo.size(); i++) {
+                    informe = informe+arreglo.get(i).getDia()+": "+arreglo.get(i).getCanti_entrada()+" veces<p>";
+                }
+                informe = informe+"<html>";
+                lblNumEntradas.setText(informe);
                 
                 if (!modelo.obtenerVehiculosCon(cedula).isEmpty()) {
                     llenarTabla(modelo.obtenerVehiculosCon(cedula));

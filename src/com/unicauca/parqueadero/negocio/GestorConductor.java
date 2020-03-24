@@ -143,7 +143,16 @@ public class GestorConductor extends java.util.Observable {
 
         return exito;
     }
-
+    public ArrayList<Informe> obtenerInforme(String cedula){
+        String arrayJson = servicioConductores.consultarInforme(cedula);
+        ArrayList<Informe>lista_informe = new ArrayList<>();
+        if(!arrayJson.equals("Vacio")){
+            lista_informe = deserealizarInforme(arrayJson);
+        }else{
+            respuesta = arrayJson;
+        }
+        return lista_informe;
+    }
     /**
      * Metodo que busca un conductor
      *
@@ -196,6 +205,14 @@ public class GestorConductor extends java.util.Observable {
         }
         return lista_multas;
 
+    }
+    private ArrayList<Informe> deserealizarInforme(String arrayJsonSerializado){
+        Informe[] misInfromes  = new Gson().fromJson(arrayJsonSerializado, Informe[].class);
+        ArrayList<Informe> lista_informe = new ArrayList<>();
+        for(int i = 0;i<misInfromes.length;i++){
+            lista_informe.add(misInfromes[i]);
+        }
+        return lista_informe;
     }
     /**
      * Metodo qeu deserealiza las multas en formato json

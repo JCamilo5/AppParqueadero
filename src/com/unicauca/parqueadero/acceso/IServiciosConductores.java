@@ -15,6 +15,7 @@ public interface IServiciosConductores {
     public String consultarVehiculoCon(String cedula);
     public String consultarRoles(String cedula);
     public String consultarMultas(String placa);
+    public String consultarInforme(String cedula);
     
     public String agregarConductor(String cedula,String nombres,String apellidos,String genero,String fechaNaci);
     public String agregarVehiculo(String placa,String marca,String tipo);

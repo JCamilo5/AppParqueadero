@@ -9,8 +9,9 @@ package com.unicauca.parqueadero.negocio;
  *
  * @author JuanCamilo
  */
-public class EstrategiaFactory {
+public class EstrategiaFactory implements Factory{
 
+    @Override
     public EstrategiaParqueadero getEstrategia(String criterio) {
         switch (criterio) {
             case "Entrada":

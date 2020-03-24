@@ -45,6 +45,8 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
      */
     private String leerFlujoEntradaSalida(String accion) throws IOException {
         String respuesta = "";
+        try {
+            
         entradaDecorada = new Scanner(socket.getInputStream());
         salidaDecorada = new PrintStream(socket.getOutputStream());
         salidaDecorada.flush();
@@ -55,6 +57,11 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         }
 
         return respuesta;
+        } catch (Exception e) {
+            System.out.println("error socket");
+            return respuesta;
+        }
+        
     }
 
     /**
@@ -124,7 +131,11 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
     public String consultarTodosConductores() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-
+    /**
+     * Metodo que se conecta al servidor para consultar los vehiculos asociados a una cedula
+     * @param cedula cedula de un conductor
+     * @return arraySerializado de vehiculos
+     */
     @Override
     public String consultarVehiculoCon(String cedula) {
         String respuesta = null;
@@ -139,7 +150,11 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         }
         return respuesta;
     }
-
+    /**
+     * Metodo que se conecta al servidor para consultar las mmultas asociadas a una placa
+     * @param placa placa de un vehiculo
+     * @return arraySerializado de multas
+     */
     @Override
     public String consultarMultas(String placa) {
         String respuesta = null;
@@ -154,11 +169,34 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         }
         return respuesta;
     }
-
+    /**
+     * Metodo que se conecta al servidor para consultar el rol
+     * @param cedula cedula de un conductor
+     * @return arraySerializado de vehiculos
+     */
     @Override
     public String consultarRoles(String cedula) {
         String respuesta = null;
         String accion = "Consultar Roles";
+        try {
+            conectar(IP_SERVIDOR, PUERTO);
+            respuesta = leerFlujoEntradaSalida(accion + "," + cedula);
+            cerrarFlujos();
+            desconectar();
+        } catch (IOException ex) {
+            Logger.getLogger(ServicioServidorUnicauca.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return respuesta;
+    }
+    /**
+     * Metodo que se conecta a el servidor para consultar los informes de entrada de un conductor
+     * @param cedula cedula del conductor
+     * @return arraySerializado con las entradas de un conductor
+     */
+    @Override
+    public String consultarInforme(String cedula) {
+        String respuesta = null;
+        String accion = "Obtener Informe";
         try {
             conectar(IP_SERVIDOR, PUERTO);
             respuesta = leerFlujoEntradaSalida(accion + "," + cedula);
@@ -174,7 +212,15 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
     public String agregarUsuario() {
         return " ";
     }
-
+    /**
+     * Metodo que se conecta al servidor para agregar un conductor
+     * @param cedula cedula del conductor
+     * @param nombres nombres del condcutor
+     * @param apellidos apellidos del conductor
+     * @param genero genero del conductor
+     * @param fechaNaci fecha de nacimineto del conductor
+     * @return exito o error
+     */
     @Override
     public String agregarConductor(String cedula, String nombres, String apellidos, String genero, String fechaNaci) {
         String respuesta = null;
@@ -189,7 +235,13 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         }
         return respuesta;
     }
-
+    /**
+     * Metodo que se conecta al servidor para agregar una multa 
+     * @param placa placa del vehiculo
+     * @param descripcion descripcion de la infraccion 
+     * @param foto ubicacion de donde se encuentra la foro
+     * @return exito o error
+     */
     @Override
     public String agregarMulta(String placa, String descripcion, String foto) {
         String respuesta = null;
@@ -204,7 +256,13 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         }
         return respuesta;
     }
-
+    /**
+     * Metodo que se conecta al servidor para ingresar un vehiculo
+     * @param placa placa del vehiculo
+     * @param marca marca del vehiculo
+     * @param tipo tipo (Moto,Automovil)
+     * @return exito o error
+     */
     @Override
     public String agregarVehiculo(String placa, String marca, String tipo) {
         String respuesta = null;
@@ -219,7 +277,12 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         }
         return respuesta;
     }
-
+    /**
+     * Metodo que asocia un vehiculo con un conductor
+     * @param cedula cedula de un conductor
+     * @param placa placa de un vehiculo
+     * @return exito o error
+     */
     @Override
     public String asociarVehiCond(String cedula, String placa) {
         String respuesta = null;
@@ -234,7 +297,13 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         }
         return respuesta;
     }
-
+    /**
+     * Metodo qeu se conecta al servidor para registrar un ingreso al parqueadero
+     * @param cedula cedula del conductor
+     * @param placa placa del vehiculo
+     * @param bahia bahia asignada
+     * @return exito o error
+     */
     @Override
     public String ingresarVehiculo(String cedula, String placa, String bahia) {
         String respuesta = null;
@@ -249,7 +318,10 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         }
         return respuesta;
     }
-
+    /**
+     * Metodo que se conecta al servidor para consultar las bahias ocupadas
+     * @return arraySerializado con las bahias ocupadas
+     */
     @Override
     public String obtenerOcupados() {
         String respuesta = null;
@@ -264,7 +336,12 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         }
         return respuesta;
     }
-
+    /**
+     * Metodo que se conecta al servidor para asociar un rol a un conductor
+     * @param cedula cedula del conductor 
+     * @param rol rol
+     * @return  exito o error
+     */
     @Override
     public String asociarRol(String cedula, String rol) {
         String respuesta = null;
@@ -279,7 +356,19 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         }
         return respuesta;
     }
-
+    /**
+     * Metodo que se conecta al servidor para registrar un vigilante
+     * @param ced cedula del vigilante
+     * @param emp empresa a la que pertenece
+     * @param usua usuario
+     * @param noms nombres
+     * @param apells apellidos
+     * @param genero genero
+     * @param fechaNaci fecha de nacimiento
+     * @param contra contraseña
+     * @param puesto ubicacion
+     * @return  exito o error
+     */
     @Override
     public String agregarVigilante(String ced, String emp, String usua, String noms, String apells, String genero, String fechaNaci, String contra, String puesto) {
         String respuesta = null;
@@ -294,7 +383,11 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         }
         return respuesta;
     }
-
+    /**
+     * Metodo que se conecta al servidor para registrar la salida de un vehiculo del parqueadero
+     * @param bahia puesto que dejo
+     * @return exito o error
+     */
     @Override
     public String registrarSalida(String bahia) {
         String respuesta = null;
@@ -309,7 +402,10 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         }
         return respuesta;
     }
-
+    /**
+     * Metodo que se conecta al servidor para solicitar las horas de mayor congestion
+     * @return arraySerializado con las horas de congestion
+     */
     @Override
     public String horasConegestion() {
         String respuesta = null;
