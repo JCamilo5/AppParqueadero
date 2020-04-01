@@ -5,19 +5,19 @@
  */
 package com.unicauca.parqueadero.negocio;
 
-import com.unicauca.parqueadero.negocio.EstrategiaParqueadero;
 import com.unicauca.parqueadero.negocio.Bahia;
 import com.unicauca.parqueadero.negocio.Parqueadero;
 import com.unicauca.parqueadero.presentacion.GUIParqueadero;
 import com.unicauca.parqueadero.presentacion.GUIParqueaderoController;
 import com.unicauca.parqueadero.utilidades.Utilidades;
 import java.util.ArrayList;
+import com.unicauca.parqueadero.negocio.IEstrategiaParqueadero;
 
 /**
  *
  * @author JuanCamilo
  */
-public class EstrategiaEntrada implements EstrategiaParqueadero {
+public class EstrategiaEntrada implements IEstrategiaParqueadero {
 
     Parqueadero gestor = new Parqueadero();
     Hilo t1;
@@ -29,17 +29,18 @@ public class EstrategiaEntrada implements EstrategiaParqueadero {
         op = Utilidades.mensajeConfirmacion("Esta seguro que desea asignar el puesto: " + puesto, "CONFIRMACION");
         if (op == 0) {
             if (gestor.registrarIngreso(c.getCedula(), c.getPlaca(), puesto)) {
-                vista.deshabilitar(indice - 1);
+ 
+                vista.deshabilitar((indice - 1),true);
                 Utilidades.mensajeExito("Ingreso Exitoso", "Proceso Exitoso");
             } else {
                 Utilidades.mensajeError("Un error inesperado ha ocurrido", "Proceso Fallido");
-                vista.habilitar(indice - 1);
+                vista.habilitar((indice - 1),true);
             }
             this.terminarHilo();
             System.out.println("Termino hilo");
             vista.dispose();
         } else {
-            vista.habilitar(indice - 1);
+            vista.habilitar((indice - 1),true);
         }
         vista.dispose();
     }
@@ -52,13 +53,14 @@ public class EstrategiaEntrada implements EstrategiaParqueadero {
         for (int i = 0; i < vista.getBotones().size(); i++) {
             for (int j = 0; j < aux.size(); j++) {
                 if (vista.getBotones().get(i).getText().equals(aux.get(j).getIdentificador())) {
-                    vista.deshabilitar(i);
+
+                    vista.deshabilitar(i,true);
                     break;
                 } else {
 
                 }
                 if (j == aux.size() - 1) {
-                    vista.habilitar(i);
+                    vista.habilitar(i,true);
                 }
 
             }

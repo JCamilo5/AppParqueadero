@@ -45,7 +45,8 @@ public class Parqueadero {
     public boolean registrarIngreso(String cedula, String placa, String bahia) {
         boolean exito = false;
         respuesta = servicioParqueadero.ingresarVehiculo(cedula, placa, bahia);
-        if (respuesta.equals("Registro Exitoso")) {
+        System.out.println(respuesta);
+        if (!respuesta.equals("Error")) {
             exito = true;
         }
         return exito;
@@ -60,8 +61,11 @@ public class Parqueadero {
         String arrayJson = servicioParqueadero.obtenerOcupados();
         ArrayList<Bahia> bahias = new ArrayList<>();
         if (!arrayJson.equals("Parqueadero libre")) {
-
+            try{
             bahias = deserelizarBahia(arrayJson);
+            }catch(Exception e){
+                
+            }
 
         } else {
 
@@ -73,7 +77,11 @@ public class Parqueadero {
         String arryJson = servicioParqueadero.horasConegestion();
         ArrayList<IntervaloCongestion> horas = new ArrayList<>();
         if(!arryJson.equals("Vacio")){
+            try{
             horas = deserealizarHoras(arryJson);
+            }catch(Exception e){
+                
+            }
         }
         return horas;
     }

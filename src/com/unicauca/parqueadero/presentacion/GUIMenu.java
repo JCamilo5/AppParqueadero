@@ -26,6 +26,7 @@ public class GUIMenu extends javax.swing.JFrame {
     private GUIRegistroVigilante vistaRegVig;
     private String privilegio;
     private String ubicacion;
+    private String nombre_usuario="";
 
     /**
      * Creates new form test
@@ -41,7 +42,9 @@ public class GUIMenu extends javax.swing.JFrame {
         multa.setSize(700, 300);
         multa.setLocationRelativeTo(null);
     }
-
+    public void setNombre(String nombre){
+        this.nombre_usuario = nombre;
+    }
     public void setUbicacion(String ubi) {
         this.ubicacion = ubi;
     }
@@ -109,14 +112,7 @@ public class GUIMenu extends javax.swing.JFrame {
     }
 
     private void ponerUsuarioLogueado() {
-
-        if (Utilidades.usuario == null) {
-            this.mnuEmpleadoLogueado.setText("(Anónimo)");
-        } else {
-            this.mnuEmpleadoLogueado.setText("(" + Utilidades.usuario.getUser() + ")");
-            usuario_activo(Utilidades.usuario.getNombres() + " " + Utilidades.usuario.getApellidos());
-        }
-
+            this.mnuEmpleadoLogueado.setText("("+nombre_usuario+")");
     }
 
     /**

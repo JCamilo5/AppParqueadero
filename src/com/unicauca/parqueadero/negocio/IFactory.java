@@ -9,6 +9,6 @@ package com.unicauca.parqueadero.negocio;
  *
  * @author JuanCamilo
  */
-public interface Factory {
-    public EstrategiaParqueadero getEstrategia(String criterio);
+public interface IFactory {
+    public IEstrategiaParqueadero getEstrategia(String criterio);
 }

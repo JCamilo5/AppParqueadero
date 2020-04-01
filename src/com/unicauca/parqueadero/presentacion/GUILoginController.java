@@ -6,6 +6,7 @@
 package com.unicauca.parqueadero.presentacion;
 
 import com.unicauca.parqueadero.negocio.GestorUsuarios;
+import com.unicauca.parqueadero.negocio.Usuario;
 import com.unicauca.parqueadero.utilidades.Utilidades;
 import static java.awt.Frame.MAXIMIZED_BOTH;
 import java.awt.event.ActionEvent;
@@ -53,14 +54,15 @@ public class GUILoginController implements ActionListener {
             case "Ingresar":
                 String usuario = vista.getUsuer();
                 String password = vista.getPassword();
-
-                if (modelo.consultarUsuario(usuario, password) != null) {
+                 Usuario usu = modelo.consultarUsuario(usuario, password);
+                if (usu != null) {
                     if(vista.getSalida().isSelected()){
                         menu.setUbicacion("Salida");
                     }else{
                         menu.setUbicacion("Entrada");
                     }
-                    menu.setPrivilegio(modelo.consultarUsuario(usuario, password).getPrivilegio());
+                    menu.setPrivilegio(usu.getPrivilegio());
+                    menu.setNombre(usu.getNombres());
                     menu.usuario_activo(usuario); 
                     vista.dispose();
                     menu.iniciar();

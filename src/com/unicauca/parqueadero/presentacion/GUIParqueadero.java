@@ -5,7 +5,6 @@
  */
 package com.unicauca.parqueadero.presentacion;
 
-import com.unicauca.parqueadero.negocio.EstrategiaParqueadero;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Image;
@@ -22,6 +21,7 @@ import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.JToggleButton;
 import javax.swing.WindowConstants;
+import com.unicauca.parqueadero.negocio.IEstrategiaParqueadero;
 
 /**
  *
@@ -30,17 +30,18 @@ import javax.swing.WindowConstants;
 public class GUIParqueadero extends javax.swing.JFrame {
 
     private ArrayList<JToggleButton> tmp;
-    private EstrategiaParqueadero estrategia;
+    private IEstrategiaParqueadero estrategia;
     private GUIParqueadero vista;
+
     /**
      * Creates new form GUIParqueaderoSur
      */
     public GUIParqueadero() {
         vista = this;
         this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-        this.addWindowListener(new WindowAdapter(){
+        this.addWindowListener(new WindowAdapter() {
             @Override
-            public void windowClosing(WindowEvent e){
+            public void windowClosing(WindowEvent e) {
                 System.out.println("Cerro hilo");
                 estrategia.terminarHilo();
                 vista.dispose();
@@ -51,29 +52,44 @@ public class GUIParqueadero extends javax.swing.JFrame {
         this.setIconImage(icon);
         guardarBotones();
         //this.hilo.start();
-        
+
     }
-    public void cerrar(){
+
+    public void cerrar() {
         this.dispose();
     }
-    public void habilitar(int i) {
-        tmp.get(i).setSelected(false);
-        tmp.get(i).setEnabled(true);
+
+    public void habilitar(int i, boolean es_entrada) {
+        if (es_entrada) {
+            tmp.get(i).setBackground(new Color(240, 240, 240));
+            tmp.get(i).setSelected(false);
+            tmp.get(i).setEnabled(true);
+        } else {
+            tmp.get(i).setBackground(Color.green);
+            tmp.get(i).setSelected(false);
+            tmp.get(i).setEnabled(true);
+        }
     }
-    
-    public void deshabilitar(int i) {
-        
-        tmp.get(i).setSelected(true);
+
+    public void deshabilitar(int i,boolean es_entrada) {
+        if(es_entrada){
+        tmp.get(i).setBackground(Color.green);
+        tmp.get(i).setSelected(false);
         tmp.get(i).setEnabled(false);
+        }else{
+            tmp.get(i).setBackground(new Color(240, 240, 240));
+            tmp.get(i).setSelected(false);
+            tmp.get(i).setEnabled(false);
+        }
     }
 
     public void cambiarColor(int indice) {
-        //tmp.get(indice).setBackground(Color.green);
-        tmp.get(indice).setSelected(true);
+        tmp.get(indice).setBackground(Color.green);
+        tmp.get(indice).setSelected(false);
         tmp.get(indice).setEnabled(false);
     }
 
-    public void setEstrategia(EstrategiaParqueadero est) {
+    public void setEstrategia(IEstrategiaParqueadero est) {
         this.estrategia = est;
     }
 
@@ -101,7 +117,6 @@ public class GUIParqueadero extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         pnlZonaMotos = new javax.swing.JPanel();
-        btn31 = new javax.swing.JToggleButton();
         btn32 = new javax.swing.JToggleButton();
         btn33 = new javax.swing.JToggleButton();
         btn35 = new javax.swing.JToggleButton();
@@ -111,6 +126,7 @@ public class GUIParqueadero extends javax.swing.JFrame {
         btn34 = new javax.swing.JToggleButton();
         btn39 = new javax.swing.JToggleButton();
         btn40 = new javax.swing.JToggleButton();
+        btn31 = new javax.swing.JToggleButton();
         pnlIpet = new javax.swing.JPanel();
         btn25 = new javax.swing.JToggleButton();
         btn26 = new javax.swing.JToggleButton();
@@ -158,7 +174,7 @@ public class GUIParqueadero extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(255, 102, 102));
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Laboratorios"));
-        pnlParqueadero.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 140, 80, 220));
+        pnlParqueadero.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 140, 80, 220));
 
         jPanel2.setBackground(new java.awt.Color(255, 102, 102));
         jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("IPET"));
@@ -166,228 +182,231 @@ public class GUIParqueadero extends javax.swing.JFrame {
 
         jPanel3.setBackground(new java.awt.Color(255, 102, 102));
         jPanel3.setBorder(javax.swing.BorderFactory.createTitledBorder("FIET"));
-        pnlParqueadero.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 100, 90, 280));
+        pnlParqueadero.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 130, 90, 260));
 
         pnlZonaMotos.setBackground(new java.awt.Color(153, 153, 153));
         pnlZonaMotos.setBorder(javax.swing.BorderFactory.createTitledBorder("Zona Motos"));
         pnlZonaMotos.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btn31.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn31.setForeground(new java.awt.Color(240, 240, 240));
-        btn31.setText("31");
-        pnlZonaMotos.add(btn31, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 20, 20));
-
-        btn32.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn32.setForeground(new java.awt.Color(240, 240, 240));
+        btn32.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn32.setText("32");
-        pnlZonaMotos.add(btn32, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 20, 20));
+        btn32.setBorder(null);
+        pnlZonaMotos.add(btn32, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 30, 30));
 
-        btn33.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn33.setForeground(new java.awt.Color(240, 240, 240));
+        btn33.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn33.setText("33");
-        pnlZonaMotos.add(btn33, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 20, 20));
+        btn33.setBorder(null);
+        pnlZonaMotos.add(btn33, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 30, 30));
 
-        btn35.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn35.setForeground(new java.awt.Color(240, 240, 240));
+        btn35.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn35.setText("35");
-        pnlZonaMotos.add(btn35, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 20, 20));
+        btn35.setBorder(null);
+        pnlZonaMotos.add(btn35, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 30, 30));
 
-        btn36.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn36.setForeground(new java.awt.Color(240, 240, 240));
+        btn36.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn36.setText("36");
-        pnlZonaMotos.add(btn36, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 80, 20, 20));
+        btn36.setBorder(null);
+        pnlZonaMotos.add(btn36, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 30, 30));
 
-        btn37.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn37.setForeground(new java.awt.Color(240, 240, 240));
+        btn37.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn37.setText("37");
-        pnlZonaMotos.add(btn37, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 20, 20));
+        btn37.setBorder(null);
+        pnlZonaMotos.add(btn37, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 30, 30));
 
-        btn38.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn38.setForeground(new java.awt.Color(240, 240, 240));
+        btn38.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn38.setText("38");
-        pnlZonaMotos.add(btn38, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 110, 20, 20));
+        btn38.setBorder(null);
+        pnlZonaMotos.add(btn38, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, 30, 30));
 
-        btn34.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn34.setForeground(new java.awt.Color(240, 240, 240));
+        btn34.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn34.setText("34");
-        pnlZonaMotos.add(btn34, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 20, 20));
+        btn34.setBorder(null);
+        pnlZonaMotos.add(btn34, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 30, 30));
 
-        btn39.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn39.setForeground(new java.awt.Color(240, 240, 240));
+        btn39.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn39.setText("39");
-        pnlZonaMotos.add(btn39, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 20, 20));
+        btn39.setBorder(null);
+        pnlZonaMotos.add(btn39, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 30, 30));
 
-        btn40.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn40.setForeground(new java.awt.Color(240, 240, 240));
+        btn40.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn40.setText("40");
-        pnlZonaMotos.add(btn40, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, 20, 20));
+        btn40.setBorder(null);
+        pnlZonaMotos.add(btn40, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 30, 30));
 
-        pnlParqueadero.add(pnlZonaMotos, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 160, 80, 190));
+        btn31.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
+        btn31.setText("31");
+        btn31.setBorder(null);
+        pnlZonaMotos.add(btn31, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 30, 30));
+
+        pnlParqueadero.add(pnlZonaMotos, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 140, 90, 220));
 
         pnlIpet.setBackground(new java.awt.Color(153, 153, 153));
         pnlIpet.setBorder(javax.swing.BorderFactory.createTitledBorder("Zona IPET"));
         pnlIpet.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btn25.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn25.setForeground(new java.awt.Color(240, 240, 240));
+        btn25.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn25.setText("25");
-        pnlIpet.add(btn25, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 20, 20));
+        btn25.setBorder(null);
+        pnlIpet.add(btn25, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 30, 30));
 
-        btn26.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn26.setForeground(new java.awt.Color(240, 240, 240));
+        btn26.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn26.setText("26");
-        pnlIpet.add(btn26, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 20, 20));
+        btn26.setBorder(null);
+        pnlIpet.add(btn26, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 30, 30));
 
-        btn27.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn27.setForeground(new java.awt.Color(240, 240, 240));
+        btn27.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn27.setText("27");
-        pnlIpet.add(btn27, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 20, 20));
+        btn27.setBorder(null);
+        pnlIpet.add(btn27, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 30, 30));
 
-        btn28.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn28.setForeground(new java.awt.Color(240, 240, 240));
+        btn28.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn28.setText("28");
-        pnlIpet.add(btn28, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 20, 20));
+        btn28.setBorder(null);
+        pnlIpet.add(btn28, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 30, 30));
 
-        btn30.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn30.setForeground(new java.awt.Color(240, 240, 240));
+        btn30.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn30.setText("30");
-        pnlIpet.add(btn30, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 20, 20));
+        btn30.setBorder(null);
+        pnlIpet.add(btn30, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, 30, 30));
 
-        btn29.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn29.setForeground(new java.awt.Color(240, 240, 240));
+        btn29.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn29.setText("29");
-        pnlIpet.add(btn29, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 20, 20));
+        btn29.setBorder(null);
+        pnlIpet.add(btn29, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 30, 30));
 
-        pnlParqueadero.add(pnlIpet, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 60, 100, 70));
+        pnlParqueadero.add(pnlIpet, new org.netbeans.lib.awtextra.AbsoluteConstraints(360, 30, 140, 100));
 
         pnlFic.setBackground(new java.awt.Color(153, 153, 153));
         pnlFic.setBorder(javax.swing.BorderFactory.createTitledBorder("Zona FIC"));
         pnlFic.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btn16.setForeground(new java.awt.Color(240, 240, 240));
+        btn16.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn16.setText("16");
-        pnlFic.add(btn16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 20, 20));
+        btn16.setBorder(null);
+        pnlFic.add(btn16, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 30, 30));
 
-        btn18.setForeground(new java.awt.Color(240, 240, 240));
+        btn18.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn18.setText("18");
-        pnlFic.add(btn18, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 10, 20, 20));
+        btn18.setBorder(null);
+        pnlFic.add(btn18, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 30, 30));
 
-        btn20.setForeground(new java.awt.Color(240, 240, 240));
+        btn20.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn20.setText("20");
-        pnlFic.add(btn20, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 40, 20, 20));
+        btn20.setBorder(null);
+        pnlFic.add(btn20, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 30, 30));
 
-        btn21.setForeground(new java.awt.Color(240, 240, 240));
+        btn21.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn21.setText("21");
-        pnlFic.add(btn21, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 40, 20, 20));
+        btn21.setBorder(null);
+        pnlFic.add(btn21, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, 30, 30));
 
-        btn22.setForeground(new java.awt.Color(240, 240, 240));
+        btn22.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn22.setText("22");
-        pnlFic.add(btn22, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 20, 20));
+        btn22.setBorder(null);
+        pnlFic.add(btn22, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 30, 30));
 
-        btn23.setForeground(new java.awt.Color(240, 240, 240));
+        btn23.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn23.setText("23");
-        pnlFic.add(btn23, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 20, 20));
+        btn23.setBorder(null);
+        pnlFic.add(btn23, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 30, 30));
 
-        btn24.setForeground(new java.awt.Color(240, 240, 240));
+        btn24.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn24.setText("24");
-        pnlFic.add(btn24, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 20, 20));
+        btn24.setBorder(null);
+        pnlFic.add(btn24, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, 30, 30));
 
-        btn17.setForeground(new java.awt.Color(240, 240, 240));
+        btn17.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn17.setText("17");
-        pnlFic.add(btn17, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 20, 20));
+        btn17.setBorder(null);
+        pnlFic.add(btn17, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 30, 30));
 
-        btn19.setForeground(new java.awt.Color(240, 240, 240));
+        btn19.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn19.setText("19");
-        pnlFic.add(btn19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 40, 20, 20));
+        btn19.setBorder(null);
+        pnlFic.add(btn19, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 30, 30));
 
-        pnlParqueadero.add(pnlFic, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 100, 100));
+        pnlParqueadero.add(pnlFic, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 260, 130, 140));
 
         pnlFiet.setBackground(new java.awt.Color(153, 153, 153));
         pnlFiet.setBorder(javax.swing.BorderFactory.createTitledBorder("Zona Fiet"));
         pnlFiet.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btn2.setFont(new java.awt.Font("Tahoma", 0, 5)); // NOI18N
-        btn2.setForeground(new java.awt.Color(240, 240, 240));
+        btn2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btn2.setText("2");
-        btn2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "2", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 8))); // NOI18N
-        pnlFiet.add(btn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, 20, 20));
+        btn2.setBorder(null);
+        pnlFiet.add(btn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 20, 30, 30));
 
-        btn5.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn5.setForeground(new java.awt.Color(240, 240, 240));
+        btn5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btn5.setText("5");
-        btn5.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "5", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 8))); // NOI18N
-        pnlFiet.add(btn5, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 70, 20, 20));
+        btn5.setBorder(null);
+        pnlFiet.add(btn5, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 60, 30, 30));
 
-        btn6.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn6.setForeground(new java.awt.Color(240, 240, 240));
+        btn6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btn6.setText("6");
-        btn6.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "6", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 8))); // NOI18N
-        pnlFiet.add(btn6, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, 20, 20));
+        btn6.setBorder(null);
+        pnlFiet.add(btn6, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 60, 30, 30));
 
-        btn7.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn7.setForeground(new java.awt.Color(240, 240, 240));
+        btn7.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btn7.setText("7");
-        pnlFiet.add(btn7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 110, 20, 20));
+        btn7.setBorder(null);
+        pnlFiet.add(btn7, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 100, 30, 30));
 
-        btn8.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn8.setForeground(new java.awt.Color(240, 240, 240));
+        btn8.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btn8.setText("8");
-        pnlFiet.add(btn8, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 110, 20, 20));
+        btn8.setBorder(null);
+        pnlFiet.add(btn8, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 100, 30, 30));
 
-        btn9.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn9.setForeground(new java.awt.Color(240, 240, 240));
+        btn9.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btn9.setText("9");
-        pnlFiet.add(btn9, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 110, 20, 20));
+        btn9.setBorder(null);
+        pnlFiet.add(btn9, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 100, 30, 30));
 
-        btn10.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn10.setForeground(new java.awt.Color(240, 240, 240));
+        btn10.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn10.setText("10");
-        pnlFiet.add(btn10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 150, 20, 20));
+        btn10.setBorder(null);
+        pnlFiet.add(btn10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 30, 30));
 
-        btn11.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn11.setForeground(new java.awt.Color(240, 240, 240));
+        btn11.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn11.setText("11");
-        pnlFiet.add(btn11, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 150, 20, 20));
+        btn11.setBorder(null);
+        pnlFiet.add(btn11, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 140, 30, 30));
 
-        btn12.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn12.setForeground(new java.awt.Color(240, 240, 240));
+        btn12.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn12.setText("12");
-        pnlFiet.add(btn12, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 150, 20, 20));
+        btn12.setBorder(null);
+        pnlFiet.add(btn12, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 140, 30, 30));
 
-        btn13.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn13.setForeground(new java.awt.Color(240, 240, 240));
+        btn13.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn13.setText("13");
-        pnlFiet.add(btn13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 190, 20, 20));
+        btn13.setBorder(null);
+        pnlFiet.add(btn13, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 180, 30, 30));
 
-        btn14.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn14.setForeground(new java.awt.Color(240, 240, 240));
+        btn14.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn14.setText("14");
-        pnlFiet.add(btn14, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 190, 20, 20));
+        btn14.setBorder(null);
+        pnlFiet.add(btn14, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 180, 30, 30));
 
-        btn15.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn15.setForeground(new java.awt.Color(240, 240, 240));
+        btn15.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         btn15.setText("15");
-        pnlFiet.add(btn15, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 190, 20, 20));
+        btn15.setBorder(null);
+        pnlFiet.add(btn15, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 180, 30, 30));
 
-        btn3.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn3.setForeground(new java.awt.Color(240, 240, 240));
+        btn3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btn3.setText("3");
-        btn3.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "3", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 8))); // NOI18N
-        pnlFiet.add(btn3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 30, 20, 20));
+        btn3.setBorder(null);
+        pnlFiet.add(btn3, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 20, 30, 30));
 
-        btn4.setFont(new java.awt.Font("Tahoma", 0, 3)); // NOI18N
-        btn4.setForeground(new java.awt.Color(240, 240, 240));
+        btn4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btn4.setText("4");
-        btn4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "4", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 8))); // NOI18N
-        pnlFiet.add(btn4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 20, 20));
+        btn4.setBorder(null);
+        pnlFiet.add(btn4, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 30, 30));
 
-        btn1.setFont(new java.awt.Font("Tahoma", 0, 5)); // NOI18N
-        btn1.setForeground(new java.awt.Color(240, 240, 240));
+        btn1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         btn1.setText("1");
-        btn1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "1", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Tahoma", 0, 8))); // NOI18N
-        pnlFiet.add(btn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 20, 20));
+        btn1.setBorder(null);
+        pnlFiet.add(btn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 30, 30));
 
-        pnlParqueadero.add(pnlFiet, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 100, 220));
+        pnlParqueadero.add(pnlFiet, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 130, 240));
 
         getContentPane().add(pnlParqueadero, java.awt.BorderLayout.CENTER);
 
@@ -399,7 +418,7 @@ public class GUIParqueadero extends javax.swing.JFrame {
 
         pnlOcupado.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        btnOcupado.setBackground(new java.awt.Color(51, 153, 0));
+        btnOcupado.setBackground(new java.awt.Color(0, 255, 0));
         pnlOcupado.add(btnOcupado, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 20, 20));
 
         lblOcupado.setText("OCUPADO");
@@ -466,6 +485,7 @@ public class GUIParqueadero extends javax.swing.JFrame {
         tmp.add(btn29);
         tmp.add(btn30);
         tmp.add(btn31);
+        tmp.add(btn32);
         tmp.add(btn32);
         tmp.add(btn33);
         tmp.add(btn34);
@@ -570,15 +590,15 @@ public class GUIParqueadero extends javax.swing.JFrame {
     private javax.swing.JPanel pnlTitulo;
     private javax.swing.JPanel pnlZonaMotos;
     // End of variables declaration//GEN-END:variables
-      Thread hilo = new Thread(){
+      Thread hilo = new Thread() {
         @Override
-        public void run(){
+        public void run() {
             int segundos = 0;
             try {
-                while(true){
+                while (true) {
                     Thread.sleep(1000);
                     segundos++;
-                    if(segundos >= 3){
+                    if (segundos >= 3) {
                         System.out.println("Cargar mapa");
                         //estrategia.cargarPuesto(vista);
                         segundos = 0;
@@ -588,9 +608,8 @@ public class GUIParqueadero extends javax.swing.JFrame {
                 System.out.println("Ocurrio una exepcion");
             }
             System.out.println("Afuera del hilo");
-      
-            
+
         }
     };
-  
+
 }

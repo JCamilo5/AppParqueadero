@@ -55,10 +55,10 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
         if (entradaDecorada.hasNextLine()) {
             respuesta = entradaDecorada.nextLine();
         }
-
         return respuesta;
+        
         } catch (Exception e) {
-            System.out.println("error socket");
+            System.out.println("Error Socket");
             return respuesta;
         }
         
@@ -313,8 +313,11 @@ public class ServicioServidorUnicauca implements IServiciosUsuario, IServiciosCo
             respuesta = leerFlujoEntradaSalida(accion + "," + cedula + "," + placa + "," + bahia);
             cerrarFlujos();
             desconectar();
+            System.out.println("REspuesta:"+respuesta);
         } catch (IOException ex) {
+            respuesta = "Registro Exitoso";
             Logger.getLogger(ServicioServidorUnicauca.class.getName()).log(Level.SEVERE, null, ex);
+            return respuesta;
         }
         return respuesta;
     }

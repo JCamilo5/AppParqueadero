@@ -5,7 +5,6 @@
  */
 package com.unicauca.parqueadero.presentacion;
 
-import com.unicauca.parqueadero.negocio.EstrategiaParqueadero;
 import com.unicauca.parqueadero.negocio.Bahia;
 import com.unicauca.parqueadero.negocio.EstrategiaFactory;
 import com.unicauca.parqueadero.negocio.Parqueadero;
@@ -17,6 +16,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JToggleButton;
+import com.unicauca.parqueadero.negocio.IEstrategiaParqueadero;
 
 /**
  *
@@ -28,7 +28,7 @@ public class GUIParqueaderoController implements ActionListener {
     private Parqueadero modelo;
     private String placa;
     private String cedula;
-    private EstrategiaParqueadero estrategia;
+    private IEstrategiaParqueadero estrategia;
     private EstrategiaFactory factory;
     
     public GUIParqueaderoController(GUIParqueadero vista, Parqueadero modelo,EstrategiaFactory factory) {
@@ -102,7 +102,8 @@ public class GUIParqueaderoController implements ActionListener {
     
     public void mostrarMapa() {
         GUIParqueadero v = new GUIParqueadero();
-        EstrategiaParqueadero esAux = factory.getEstrategia(Utilidades.estrategia);
+        IEstrategiaParqueadero esAux = factory.getEstrategia(Utilidades.estrategia);
+        v.setEstrategia(esAux);
         esAux.cargarPuesto(v);
         
         v.setTitle("Mapa Parqueadero");

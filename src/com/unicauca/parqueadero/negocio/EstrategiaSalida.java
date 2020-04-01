@@ -5,18 +5,18 @@
  */
 package com.unicauca.parqueadero.negocio;
 
-import com.unicauca.parqueadero.negocio.EstrategiaParqueadero;
 import com.unicauca.parqueadero.negocio.Parqueadero;
 import com.unicauca.parqueadero.presentacion.GUIParqueadero;
 import com.unicauca.parqueadero.presentacion.GUIParqueaderoController;
 import com.unicauca.parqueadero.utilidades.Utilidades;
 import java.util.ArrayList;
+import com.unicauca.parqueadero.negocio.IEstrategiaParqueadero;
 
 /**
  *
  * @author JuanCamilo
  */
-public class EstrategiaSalida implements EstrategiaParqueadero {
+public class EstrategiaSalida implements IEstrategiaParqueadero {
 
     Parqueadero gestor = new Parqueadero();
     Hilo t1;
@@ -28,14 +28,14 @@ public class EstrategiaSalida implements EstrategiaParqueadero {
         op = Utilidades.mensajeConfirmacion("Esta seguro que desea liberar el puesto: " + puesto, "CONFIRMACION");
         if (op == 0) {
             if (gestor.registrarSalida(puesto)) {
-                vista.deshabilitar(indice - 1);
+                vista.deshabilitar((indice - 1),false);
                 Utilidades.mensajeExito("Liberacion Exitosa", "Proceso Exitoso");
             } else {
                 Utilidades.mensajeError("Un error inesperado ha ocurrido", "Proceso Fallido");
             }
              
         } else {
-            vista.habilitar(indice - 1);
+            vista.habilitar((indice - 1),false);
         }
     }
 
@@ -46,13 +46,13 @@ public class EstrategiaSalida implements EstrategiaParqueadero {
         for (int i = 0; i < vista.getBotones().size(); i++) {
             for (int j = 0; j < aux.size(); j++) {
                 if (vista.getBotones().get(i).getText().equals(aux.get(j).getIdentificador())) {
-                    vista.habilitar(i);
+                    vista.habilitar(i,false);
                     break;
                 } else {
 
                 }
                 if (j == aux.size() - 1) {
-                    vista.deshabilitar(i);
+                    vista.deshabilitar(i,false);
                 }
             }
         }

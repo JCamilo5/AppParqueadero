@@ -5,8 +5,8 @@
  */
 package com.unicauca.parqueadero.negocio;
 
-import com.unicauca.parqueadero.negocio.EstrategiaParqueadero;
 import com.unicauca.parqueadero.presentacion.GUIParqueadero;
+import com.unicauca.parqueadero.negocio.IEstrategiaParqueadero;
 
 /**
  *
@@ -15,7 +15,7 @@ import com.unicauca.parqueadero.presentacion.GUIParqueadero;
 public class Hilo implements Runnable {
 
     public Thread t;
-    private EstrategiaParqueadero estrategia;
+    private IEstrategiaParqueadero estrategia;
     private GUIParqueadero vista;
 
     public Hilo() {
@@ -23,7 +23,7 @@ public class Hilo implements Runnable {
         System.out.println("New thread: " + t);
         t.start(); // Starting the thread 
     }
-    public void setEstrategia(EstrategiaParqueadero est) {
+    public void setEstrategia(IEstrategiaParqueadero est) {
         this.estrategia = est;
     }
     public void setVista(GUIParqueadero vista){

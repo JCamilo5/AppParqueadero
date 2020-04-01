@@ -12,7 +12,6 @@ import com.unicauca.parqueadero.negocio.GestorVigilante;
 import com.unicauca.parqueadero.negocio.Parqueadero;
 import com.unicauca.parqueadero.negocio.EstrategiaEntrada;
 import com.unicauca.parqueadero.negocio.EstrategiaFactory;
-import com.unicauca.parqueadero.negocio.EstrategiaParqueadero;
 import com.unicauca.parqueadero.negocio.EstrategiaSalida;
 import com.unicauca.parqueadero.presentacion.GUIAutenticacion;
 import com.unicauca.parqueadero.presentacion.GUIBusquedaConductor;
@@ -23,6 +22,7 @@ import com.unicauca.parqueadero.presentacion.GUIParqueaderoController;
 import com.unicauca.parqueadero.presentacion.GUIRegistroConductor;
 import com.unicauca.parqueadero.presentacion.GUIRegistroVehiculo;
 import com.unicauca.parqueadero.presentacion.GUIRegistroVigilante;
+import com.unicauca.parqueadero.negocio.IEstrategiaParqueadero;
 
 /**
  *
